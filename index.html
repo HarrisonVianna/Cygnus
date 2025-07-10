@@ -132,8 +132,8 @@
                     <!-- Ramo Principal do Gás -->
                     <div class="flex-1">
                         <div id="etapa-purificacao" class="flow-node bg-blue-100 border-blue-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800">Purificação do Biogás</h3>
-                            <p class="mt-1 text-sm">Separação do Metano (CH₄) do Dióxido de Carbono (CO₂).</p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800">Purificação e Valorização</h3>
+                            <p class="mt-1 text-sm">Separação do Metano (CH₄) e aproveitamento do Dióxido de Carbono (CO₂).</p>
                         </div>
                     </div>
                     
@@ -219,13 +219,19 @@
                     `
                 },
                 'etapa-purificacao': {
-                    title: 'Processo Principal: Purificação do Biogás (Upgrading)',
+                    title: 'Processo Principal: Purificação e Valorização',
                     body: `
-                        <p class="mb-4">Para que o biogás tenha valor comercial, ele precisa ser purificado, transformando-se em biometano.</p>
+                        <p class="mb-4">Para que o biogás tenha valor comercial, ele precisa ser purificado, transformando-o em biometano. Neste processo, o CO₂ também é separado, tornando-se um subproduto valioso.</p>
                         <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Sistema de Separação:</strong> O biogás bruto passa por membranas ou outros sistemas de filtragem que separam as moléculas de Metano (CH₄) das de Dióxido de Carbono (CO₂).</li>
-                            <li><strong>Biometano:</strong> O resultado é um gás com alta concentração de metano (>95%), com especificações equivalentes ao gás natural.</li>
-                            <li><strong>Destino do CO₂:</strong> O CO₂ separado é liberado na atmosfera.</li>
+                            <li><strong>Sistema de Separação:</strong> O biogás bruto passa por membranas ou sistemas de filtragem que separam as moléculas de Metano (CH₄) das de Dióxido de Carbono (CO₂).</li>
+                            <li><strong>Biometano (Produto Principal):</strong> O resultado é um gás com alta concentração de metano (>95%), com especificações equivalentes ao gás natural.</li>
+                            <li><strong>CO₂ (Subproduto Valioso):</strong> Em vez de ser liberado, o CO₂ pode ser capturado e purificado para diversos usos, gerando novas receitas e tornando o projeto ainda mais sustentável:</li>
+                        </ul>
+                        <ul class="list-disc list-inside space-y-2 mt-3 pl-5 bg-gray-50 p-4 rounded-lg">
+                            <li><strong>Indústria de Alimentos e Bebidas:</strong> Utilizado na carbonatação de refrigerantes e cervejas.</li>
+                            <li><strong>Produção de Gelo Seco:</strong> Para refrigeração e transporte de produtos sensíveis.</li>
+                            <li><strong>Agricultura:</strong> Injeção em estufas para acelerar o crescimento de plantas (fertirrigação carbônica).</li>
+                            <li><strong>Outras Indústrias:</strong> Uso como gás inerte em soldagem ou na produção de químicos e combustíveis sintéticos (e-fuels).</li>
                         </ul>
                     `
                 },
