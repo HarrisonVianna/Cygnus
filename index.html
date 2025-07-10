@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxograma Interativo - Produção de Biogás Cygnus</title>
+    <title>Fluxograma Interativo Responsivo - Produção de Biogás Cygnus</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -31,22 +31,14 @@
         .arrow {
             position: relative;
             text-align: center;
-            margin: 20px 0;
+            margin: 1rem 0;
             color: #4b5563;
         }
 
         .arrow::after {
             content: '▼'; /* Seta para baixo */
-            font-size: 2rem;
+            font-size: 1.75rem;
             line-height: 1;
-        }
-        
-        /* Estilo para a linha horizontal de processos paralelos */
-        .parallel-line {
-            width: 80%;
-            height: 2px;
-            background-color: #9ca3af;
-            margin: 0 auto;
         }
         
         /* Estilos para o Modal (janela pop-up) */
@@ -61,12 +53,18 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.6);
             animation: fadeIn 0.3s;
+            /* Flexbox para centralizar o conteúdo do modal */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
         .modal-content {
             position: relative;
-            margin: 10% auto;
             animation: slideIn 0.4s;
+            max-height: 90vh; /* Altura máxima para evitar que o modal seja maior que a tela */
+            overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
         }
 
         .modal-close {
@@ -84,66 +82,66 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(-30px) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Fluxograma de Processo Cygnus</h1>
-            <p class="text-lg text-gray-600 mt-2">Produção de Biometano a partir da Cana-Energia</p>
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-10 md:mb-12">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">Fluxograma de Processo Cygnus</h1>
+            <p class="text-base sm:text-lg text-gray-600 mt-2">Produção de Biometano a partir da Cana-Energia</p>
         </header>
 
         <div class="flex flex-col items-center">
 
             <!-- ETAPA 1: CAMPO -->
-            <div id="etapa-campo" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-2xl font-semibold text-blue-600">Etapa 1: Produção da Matéria-Prima</h2>
-                <p class="mt-2">Preparo do solo, plantio, cultivo e colheita da cana-energia.</p>
+            <div id="etapa-campo" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-xl sm:text-2xl font-semibold text-blue-600">Etapa 1: Produção da Matéria-Prima</h2>
+                <p class="mt-2 text-sm sm:text-base">Preparo do solo, plantio, cultivo e colheita da cana-energia.</p>
             </div>
             <div class="arrow"></div>
 
             <!-- ETAPA 2: TRANSPORTE E ARMAZENAGEM -->
-            <div id="etapa-transporte" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-2xl font-semibold text-blue-600">Etapa 2: Transporte e Armazenagem</h2>
-                <p class="mt-2">Transporte da cana colhida para a planta e armazenamento em pátio.</p>
+            <div id="etapa-transporte" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-xl sm:text-2xl font-semibold text-blue-600">Etapa 2: Transporte e Armazenagem</h2>
+                <p class="mt-2 text-sm sm:text-base">Transporte da cana colhida para a planta e armazenamento.</p>
             </div>
             <div class="arrow"></div>
 
             <!-- ETAPA 3: BIODIGESTÃO -->
-            <div id="etapa-biodigestao" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-2xl font-semibold text-green-600">Etapa 3: Biodigestão Anaeróbica</h2>
-                <p class="mt-2">Processo central de fermentação da biomassa para produção do biogás.</p>
+            <div id="etapa-biodigestao" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-xl sm:text-2xl font-semibold text-green-600">Etapa 3: Biodigestão Anaeróbica</h2>
+                <p class="mt-2 text-sm sm:text-base">Fermentação da biomassa para produção do biogás.</p>
             </div>
             <div class="arrow"></div>
 
-            <!-- Processos Paralelos -->
-            <div class="w-full lg:w-10/12 xl:w-8/12 mx-auto">
-                <div class="flex justify-center items-start space-x-4 md:space-x-8">
+            <!-- Processos Paralelos (Responsivo) -->
+            <div class="w-full lg:w-11/12 xl:w-10/12 mx-auto">
+                <div class="flex flex-col md:flex-row justify-center items-stretch md:items-start gap-4 md:gap-6">
                     <!-- Ramo da Autogeração de Energia -->
-                    <div class="flex-1 flex flex-col items-center">
+                    <div class="flex-1">
                         <div id="etapa-energia" class="flow-node bg-yellow-100 border-yellow-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-xl font-semibold text-yellow-800">Autossuficiência Energética</h3>
-                            <p class="mt-1 text-sm">Parte do biogás é usada em moto-geradores para suprir a demanda elétrica da planta.</p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-yellow-800">Autossuficiência Energética</h3>
+                            <p class="mt-1 text-sm">Uso de parte do biogás em moto-geradores para suprir a demanda elétrica da planta.</p>
                         </div>
                     </div>
 
                     <!-- Ramo Principal do Gás -->
-                    <div class="flex-1 flex flex-col items-center">
+                    <div class="flex-1">
                         <div id="etapa-purificacao" class="flow-node bg-blue-100 border-blue-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-xl font-semibold text-blue-800">Purificação do Biogás (Upgrading)</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800">Purificação do Biogás</h3>
                             <p class="mt-1 text-sm">Separação do Metano (CH₄) do Dióxido de Carbono (CO₂).</p>
                         </div>
                     </div>
                     
                     <!-- Ramo do Subproduto -->
-                     <div class="flex-1 flex flex-col items-center">
+                     <div class="flex-1">
                         <div id="etapa-subproduto" class="flow-node bg-green-100 border-green-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-xl font-semibold text-green-800">Gestão de Subprodutos</h3>
-                            <p class="mt-1 text-sm">O digestato é tratado e retorna ao campo como biofertilizante.</p>
+                            <h3 class="text-lg sm:text-xl font-semibold text-green-800">Gestão de Subprodutos</h3>
+                            <p class="mt-1 text-sm">O digestato retorna ao campo como biofertilizante.</p>
                         </div>
                     </div>
                 </div>
@@ -151,26 +149,26 @@
             <div class="arrow"></div>
 
             <!-- ETAPA 4: ARMAZENAMENTO -->
-            <div id="etapa-armazenamento" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-2xl font-semibold text-indigo-600">Etapa 4: Armazenamento do Biometano</h2>
-                <p class="mt-2">Compressão e armazenamento do gás purificado em tanques e esferas.</p>
+            <div id="etapa-armazenamento" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-xl sm:text-2xl font-semibold text-indigo-600">Etapa 4: Armazenamento</h2>
+                <p class="mt-2 text-sm sm:text-base">Compressão e armazenamento do gás purificado em tanques e esferas.</p>
             </div>
             <div class="arrow"></div>
 
             <!-- ETAPA 5: DISTRIBUIÇÃO -->
-            <div id="etapa-distribuicao" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-2xl font-semibold text-indigo-600">Etapa 5: Distribuição</h2>
-                <p class="mt-2">Transporte por caminhões ou injeção em gasoduto para os clientes.</p>
+            <div id="etapa-distribuicao" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-xl sm:text-2xl font-semibold text-indigo-600">Etapa 5: Distribuição</h2>
+                <p class="mt-2 text-sm sm:text-base">Transporte por caminhões ou injeção em gasoduto para os clientes.</p>
             </div>
         </div>
     </div>
 
     <!-- Modal para exibir informações detalhadas -->
     <div id="info-modal" class="modal">
-        <div class="modal-content bg-white p-8 rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl">
-            <span class="modal-close absolute top-4 right-6 text-gray-500 text-3xl font-bold cursor-pointer">&times;</span>
-            <h2 id="modal-title" class="text-3xl font-bold mb-4 text-gray-800"></h2>
-            <div id="modal-body" class="text-gray-700 leading-relaxed"></div>
+        <div class="modal-content bg-white p-6 sm:p-8 rounded-lg shadow-2xl w-full sm:w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl">
+            <span class="modal-close absolute top-2 right-4 sm:top-4 sm:right-6 text-gray-500 text-3xl font-bold cursor-pointer">&times;</span>
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold mb-4 text-gray-800"></h2>
+            <div id="modal-body" class="text-gray-700 leading-relaxed text-sm sm:text-base"></div>
         </div>
     </div>
 
@@ -276,7 +274,7 @@
                     if (content) {
                         modalTitle.textContent = content.title;
                         modalBody.innerHTML = content.body;
-                        modal.style.display = 'block';
+                        modal.style.display = 'flex'; // Mudar para flex para ativar a centralização
                     }
                 });
             });
