@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma Interativo - Produção de Biogás Cygnus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos personalizados para complementar o Tailwind CSS */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Fundo cinza claro */
+        }
+
+        /* Estilo para os nós do fluxograma */
+        .flow-node {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .flow-node:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: #2563eb; /* Borda azul no hover */
+        }
+
+        /* Estilo para as setas de conexão */
+        .arrow {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+            color: #4b5563;
+        }
+
+        .arrow::after {
+            content: '▼'; /* Seta para baixo */
+            font-size: 2rem;
+            line-height: 1;
+        }
+        
+        /* Estilo para a linha horizontal de processos paralelos */
+        .parallel-line {
+            width: 80%;
+            height: 2px;
+            background-color: #9ca3af;
+            margin: 0 auto;
+        }
+        
+        /* Estilos para o Modal (janela pop-up) */
+        .modal {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 10% auto;
+            animation: slideIn 0.4s;
+        }
+
+        .modal-close {
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+            color: #ef4444; /* Vermelho no hover */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Fluxograma de Processo Cygnus</h1>
+            <p class="text-lg text-gray-600 mt-2">Produção de Biometano a partir da Cana-Energia</p>
+        </header>
+
+        <div class="flex flex-col items-center">
+
+            <!-- ETAPA 1: CAMPO -->
+            <div id="etapa-campo" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-2xl font-semibold text-blue-600">Etapa 1: Produção da Matéria-Prima</h2>
+                <p class="mt-2">Preparo do solo, plantio, cultivo e colheita da cana-energia.</p>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- ETAPA 2: TRANSPORTE E ARMAZENAGEM -->
+            <div id="etapa-transporte" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-2xl font-semibold text-blue-600">Etapa 2: Transporte e Armazenagem</h2>
+                <p class="mt-2">Transporte da cana colhida para a planta e armazenamento em pátio.</p>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- ETAPA 3: BIODIGESTÃO -->
+            <div id="etapa-biodigestao" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-2xl font-semibold text-green-600">Etapa 3: Biodigestão Anaeróbica</h2>
+                <p class="mt-2">Processo central de fermentação da biomassa para produção do biogás.</p>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- Processos Paralelos -->
+            <div class="w-full lg:w-10/12 xl:w-8/12 mx-auto">
+                <div class="flex justify-center items-start space-x-4 md:space-x-8">
+                    <!-- Ramo da Autogeração de Energia -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div id="etapa-energia" class="flow-node bg-yellow-100 border-yellow-400 rounded-xl shadow-md p-4 w-full text-center h-full">
+                            <h3 class="text-xl font-semibold text-yellow-800">Autossuficiência Energética</h3>
+                            <p class="mt-1 text-sm">Parte do biogás é usada em moto-geradores para suprir a demanda elétrica da planta.</p>
+                        </div>
+                    </div>
+
+                    <!-- Ramo Principal do Gás -->
+                    <div class="flex-1 flex flex-col items-center">
+                        <div id="etapa-purificacao" class="flow-node bg-blue-100 border-blue-400 rounded-xl shadow-md p-4 w-full text-center h-full">
+                            <h3 class="text-xl font-semibold text-blue-800">Purificação do Biogás (Upgrading)</h3>
+                            <p class="mt-1 text-sm">Separação do Metano (CH₄) do Dióxido de Carbono (CO₂).</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Ramo do Subproduto -->
+                     <div class="flex-1 flex flex-col items-center">
+                        <div id="etapa-subproduto" class="flow-node bg-green-100 border-green-400 rounded-xl shadow-md p-4 w-full text-center h-full">
+                            <h3 class="text-xl font-semibold text-green-800">Gestão de Subprodutos</h3>
+                            <p class="mt-1 text-sm">O digestato é tratado e retorna ao campo como biofertilizante.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- ETAPA 4: ARMAZENAMENTO -->
+            <div id="etapa-armazenamento" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-2xl font-semibold text-indigo-600">Etapa 4: Armazenamento do Biometano</h2>
+                <p class="mt-2">Compressão e armazenamento do gás purificado em tanques e esferas.</p>
+            </div>
+            <div class="arrow"></div>
+
+            <!-- ETAPA 5: DISTRIBUIÇÃO -->
+            <div id="etapa-distribuicao" class="flow-node bg-white rounded-xl shadow-md p-6 w-full md:w-3/4 lg:w-1/2 text-center">
+                <h2 class="text-2xl font-semibold text-indigo-600">Etapa 5: Distribuição</h2>
+                <p class="mt-2">Transporte por caminhões ou injeção em gasoduto para os clientes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para exibir informações detalhadas -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-2xl w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl">
+            <span class="modal-close absolute top-4 right-6 text-gray-500 text-3xl font-bold cursor-pointer">&times;</span>
+            <h2 id="modal-title" class="text-3xl font-bold mb-4 text-gray-800"></h2>
+            <div id="modal-body" class="text-gray-700 leading-relaxed"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mapeamento de IDs para o conteúdo do modal
+            const modalContentData = {
+                'etapa-campo': {
+                    title: 'Etapa 1: Produção da Matéria-Prima',
+                    body: `
+                        <p class="mb-4">Esta fase inicial é a base de todo o processo e envolve as seguintes atividades agrícolas:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Preparo do Solo:</strong> Análise, correção de pH e adubação inicial para garantir a fertilidade.</li>
+                            <li><strong>Plantio e Cultivo:</strong> Plantio da cana-energia, uma variedade otimizada para alta produção de biomassa.</li>
+                            <li><strong>Colheita:</strong> Realizada mecanicamente quando a cana atinge o pico de biomassa.</li>
+                        </ul>
+                    `
+                },
+                'etapa-transporte': {
+                    title: 'Etapa 2: Transporte e Armazenagem',
+                    body: `
+                        <p class="mb-4">Logística eficiente para levar a matéria-prima do campo à indústria:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Transporte:</strong> A cana colhida é transportada por caminhões da lavoura até a planta industrial.</li>
+                            <li><strong>Armazenagem:</strong> A biomassa é descarregada e armazenada em um pátio estratégico, próximo aos biodigestores, para garantir um fluxo de alimentação contínuo.</li>
+                        </ul>
+                    `
+                },
+                'etapa-biodigestao': {
+                    title: 'Etapa 3: Biodigestão Anaeróbica',
+                    body: `
+                        <p class="mb-4">O coração da planta, onde a magia acontece. O processo se divide em:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Pré-tratamento:</strong> A cana é moída e misturada com água para criar um "caldo" homogêneo.</li>
+                            <li><strong>Inoculação:</strong> Fezes de gado são adicionadas como um poderoso inoculante, introduzindo as colônias de bactérias metanogênicas que decompõem a matéria orgânica.</li>
+                            <li><strong>Fermentação:</strong> Dentro dos biodigestores, em um ambiente sem oxigênio, as bactérias consomem a biomassa e produzem o biogás, uma mistura de Metano (CH₄) e Dióxido de Carbono (CO₂).</li>
+                        </ul>
+                    `
+                },
+                 'etapa-energia': {
+                    title: 'Processo de Suporte: Autossuficiência Energética',
+                    body: `
+                        <p class="mb-4">Para garantir a autonomia e sustentabilidade da operação, uma parte do biogás bruto é desviada do fluxo principal.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Moto-Geradores:</strong> O biogás alimenta moto-geradores específicos.</li>
+                            <li><strong>Geração Elétrica:</strong> A queima do gás gera energia elétrica suficiente para alimentar todas as operações da planta (bombas, luzes, sistemas de controle), tornando-a autossuficiente e reduzindo custos operacionais.</li>
+                        </ul>
+                    `
+                },
+                'etapa-purificacao': {
+                    title: 'Processo Principal: Purificação do Biogás (Upgrading)',
+                    body: `
+                        <p class="mb-4">Para que o biogás tenha valor comercial, ele precisa ser purificado, transformando-se em biometano.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Sistema de Separação:</strong> O biogás bruto passa por membranas ou outros sistemas de filtragem que separam as moléculas de Metano (CH₄) das de Dióxido de Carbono (CO₂).</li>
+                            <li><strong>Biometano:</strong> O resultado é um gás com alta concentração de metano (>95%), com especificações equivalentes ao gás natural.</li>
+                            <li><strong>Destino do CO₂:</strong> O CO₂ separado é liberado na atmosfera.</li>
+                        </ul>
+                    `
+                },
+                'etapa-subproduto': {
+                    title: 'Processo de Suporte: Gestão de Subprodutos',
+                    body: `
+                        <p class="mb-4">O resíduo da biodigestão, chamado de digestato, é um recurso valioso que fecha o ciclo de sustentabilidade do projeto.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Extração:</strong> O digestato (rico em nutrientes como Nitrogênio, Fósforo e Potássio) é retirado dos biodigestores.</li>
+                            <li><strong>Biofertilizante:</strong> Ele é transportado de volta para a lavoura e aplicado no solo.</li>
+                            <li><strong>Economia Circular:</strong> Este processo reduz a necessidade de fertilizantes químicos, diminui custos e enriquece o solo para os próximos ciclos de plantio.</li>
+                        </ul>
+                    `
+                },
+                'etapa-armazenamento': {
+                    title: 'Etapa 4: Armazenamento do Biometano',
+                    body: `
+                        <p class="mb-4">Após a purificação, o biometano precisa ser armazenado de forma segura e eficiente antes da distribuição.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Armazenamento Primário:</strong> O gás é inicialmente direcionado para tanques de teto flutuante, que servem como um pulmão do sistema.</li>
+                            <li><strong>Compressão e Armazenamento Final:</strong> O biometano é então comprimido a altas pressões e bombeado para grandes esferas de armazenamento, otimizando o volume e preparando-o para o transporte.</li>
+                        </ul>
+                        <p class="mt-4 font-semibold">Meta de Produção Anual: 30.000 Nm³ de metano.</p>
+                    `
+                },
+                'etapa-distribuicao': {
+                    title: 'Etapa 5: Distribuição',
+                    body: `
+                        <p class="mb-4">A etapa final, onde o produto chega ao mercado através de duas principais modalidades:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Transporte Rodoviário:</strong> O biometano é transferido das esferas para caminhões-tanque (carretas de gás comprimido) para entrega flexível a clientes industriais ou postos de GNV.</li>
+                            <li><strong>Gasoduto:</strong> O gás é injetado diretamente em um gasoduto, permitindo o transporte contínuo e em grande volume para centros consumidores ou para a malha de distribuição de gás natural.</li>
+                        </ul>
+                    `
+                }
+            };
+
+            const modal = document.getElementById('info-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const closeButton = document.querySelector('.modal-close');
+
+            document.querySelectorAll('.flow-node').forEach(node => {
+                node.addEventListener('click', () => {
+                    const content = modalContentData[node.id];
+                    if (content) {
+                        modalTitle.textContent = content.title;
+                        modalBody.innerHTML = content.body;
+                        modal.style.display = 'block';
+                    }
+                });
+            });
+
+            // Função para fechar o modal
+            const closeModal = () => {
+                modal.style.display = 'none';
+            };
+
+            closeButton.addEventListener('click', closeModal);
+
+            // Fechar o modal ao clicar fora da área de conteúdo
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
