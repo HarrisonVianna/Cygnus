@@ -1,304 +1,475 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxograma Interativo Responsivo - Produção de Biogás Cygnus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Projeto Cygnus - Oportunidade de Investimento</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- 
+    Narrative Plan:
+    1. Hook: Title and Subtitle - The big picture of renewable energy.
+    2. The Solution: Introduce Cygnus and its value proposition.
+    3. The Process: A flowchart from raw material to revenue.
+    4. Investment (CAPEX): A donut chart to break down the investment.
+    5. Production Volumes: Big number cards for key annual metrics.
+    6. Financial Returns (DRE): A stacked bar chart showing the path from revenue to profit.
+    7. Key Indicators: Big number cards for TIR, VPL, and Payback.
+    8. Sensitivity Analysis: A line chart showing IRR vs. Methane Price.
+    9. Risk Analysis: A structured HTML grid for risks and mitigations.
+    10. Call to Action: Next steps for the investor.
+    
+    Color Palette Selection: Vibrant & Trustworthy (#00A6ED, #00C895, #333745, #F7F7F7)
+    
+    Visualization Choices:
+    - CAPEX Breakdown: Donut Chart (Chart.js) - Goal: Compare. Ideal for showing composition of a whole. No SVG.
+    - Production Volumes: Big Number Cards (HTML/CSS) - Goal: Inform. Highlights key stats effectively. No SVG.
+    - Simplified DRE: Bar Chart (Chart.js) - Goal: Compare. Visually breaks down revenue into costs and profit. No SVG.
+    - Investment Indicators: Big Number Cards (HTML/CSS) - Goal: Inform. Makes financial KPIs stand out. No SVG.
+    - Sensitivity Analysis: Line Chart (Chart.js) - Goal: Relationships. Perfect for showing correlation between two variables. No SVG.
+    - Risk Matrix: Styled HTML Grid (HTML/CSS) - Goal: Organize. Clear, structured presentation of qualitative data. No SVG.
+    - Project Flowchart: Styled HTML Flexbox (HTML/CSS) - Goal: Organize. Shows a process flow without needing MermaidJS or SVG.
+    
+    Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    -->
     <style>
-        /* Estilos personalizados para complementar o Tailwind CSS */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Fundo cinza claro */
+            background-color: #F7F7F7;
+            color: #333745;
         }
-
-        /* Estilo para os nós do fluxograma */
-        .flow-node {
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .chart-container {
             position: relative;
-            border: 2px solid transparent;
-        }
-
-        .flow-node:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border-color: #2563eb; /* Borda azul no hover */
-        }
-
-        /* Estilo para as setas de conexão */
-        .arrow {
-            position: relative;
-            text-align: center;
-            margin: 1rem 0;
-            color: #4b5563;
-        }
-
-        .arrow::after {
-            content: '▼'; /* Seta para baixo */
-            font-size: 1.75rem;
-            line-height: 1;
-        }
-        
-        /* Estilos para o Modal (janela pop-up) */
-        .modal {
-            display: none; /* Escondido por padrão */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.3s;
-            /* Flexbox para centralizar o conteúdo do modal */
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
         }
-
-        .modal-content {
-            position: relative;
-            animation: slideIn 0.4s;
-            max-height: 90vh; /* Altura máxima para evitar que o modal seja maior que a tela */
-            overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
         }
-
-        .modal-close {
-            transition: all 0.2s ease;
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .modal-close:hover {
-            transform: scale(1.1);
-            color: #ef4444; /* Vermelho no hover */
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .flow-step {
+            background-color: white;
+            border: 2px solid #00A6ED;
+            color: #333745;
         }
-
-        @keyframes slideIn {
-            from { transform: translateY(-30px) scale(0.98); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+        .flow-arrow {
+            color: #00A6ED;
+        }
+        .section-title {
+            font-weight: 900;
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            color: #333745;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            color: #555;
+            text-align: center;
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem;
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="antialiased">
 
-    <div class="container mx-auto p-4 sm:p-6 md:p-8">
-        <header class="text-center mb-10 md:mb-12">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">Fluxograma de Processo Cygnus</h1>
-            <p class="text-base sm:text-lg text-gray-600 mt-2">Produção de Biometano a partir da Cana-Energia</p>
-        </header>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#333745]">Cygnus Energia</h1>
+            <ul class="flex space-x-6">
+                <li><a href="#investimento" class="text-gray-600 hover:text-[#00A6ED]">Investimento</a></li>
+                <li><a href="#financeiro" class="text-gray-600 hover:text-[#00A6ED]">Financeiro</a></li>
+                <li><a href="#riscos" class="text-gray-600 hover:text-[#00A6ED]">Riscos</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <div class="flex flex-col items-center">
+    <main class="container mx-auto px-6 py-12">
 
-            <!-- ETAPA 1: CAMPO -->
-            <div id="etapa-campo" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-xl sm:text-2xl font-semibold text-blue-600">Etapa 1: Produção da Matéria-Prima</h2>
-                <p class="mt-2 text-sm sm:text-base">Preparo do solo, plantio, cultivo e colheita da cana-energia.</p>
-            </div>
-            <div class="arrow"></div>
+        <section id="hero" class="text-center py-16">
+            <h2 class="text-5xl font-black text-[#333745] mb-4">Projeto Cygnus</h2>
+            <p class="text-2xl text-gray-700 font-semibold mb-8">Uma Oportunidade Única de Investimento no Futuro da Energia Renovável no Brasil.</p>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                A Cygnus transforma cana-energia em biometano e CO2 verde, oferecendo uma solução de energia firme, escalável e de baixo carbono, perfeitamente alinhada com as metas ESG e a crescente demanda por combustíveis sustentáveis.
+            </p>
+        </section>
 
-            <!-- ETAPA 2: TRANSPORTE E ARMAZENAGEM -->
-            <div id="etapa-transporte" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-xl sm:text-2xl font-semibold text-blue-600">Etapa 2: Transporte e Armazenagem</h2>
-                <p class="mt-2 text-sm sm:text-base">Transporte da cana colhida para a planta e armazenamento.</p>
-            </div>
-            <div class="arrow"></div>
-
-            <!-- ETAPA 3: BIODIGESTÃO -->
-            <div id="etapa-biodigestao" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-xl sm:text-2xl font-semibold text-green-600">Etapa 3: Biodigestão Anaeróbica</h2>
-                <p class="mt-2 text-sm sm:text-base">Fermentação da biomassa para produção do biogás.</p>
-            </div>
-            <div class="arrow"></div>
-
-            <!-- Processos Paralelos (Responsivo) -->
-            <div class="w-full lg:w-11/12 xl:w-10/12 mx-auto">
-                <div class="flex flex-col md:flex-row justify-center items-stretch md:items-start gap-4 md:gap-6">
-                    <!-- Ramo da Autogeração de Energia -->
-                    <div class="flex-1">
-                        <div id="etapa-energia" class="flow-node bg-yellow-100 border-yellow-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-lg sm:text-xl font-semibold text-yellow-800">Autossuficiência Energética</h3>
-                            <p class="mt-1 text-sm">Uso de parte do biogás em moto-geradores para suprir a demanda elétrica da planta.</p>
-                        </div>
+        <section id="processo" class="py-16">
+            <h3 class="section-title">Do Campo ao Gás: Nosso Processo</h3>
+            <p class="section-subtitle">
+                Utilizamos um processo integrado e eficiente para converter biomassa em produtos de alto valor agregado, garantindo autossuficiência energética e sustentabilidade.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
+                    <span class="text-4xl">🌿</span>
+                    <p class="font-bold">Cana-Energia</p>
+                    <p class="text-sm">Cultivo Dedicado</p>
+                </div>
+                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
+                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
+                    <span class="text-4xl">⚙️</span>
+                    <p class="font-bold">Biodigestão</p>
+                    <p class="text-sm">Produção de Biogás</p>
+                </div>
+                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
+                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
+                    <span class="text-4xl">💨</span>
+                    <p class="font-bold">Purificação</p>
+                    <p class="text-sm">Upgrading do Gás</p>
+                </div>
+                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
+                <div class="flex flex-col space-y-2">
+                    <div class="flow-step p-3 rounded-lg text-center shadow-lg bg-[#00C895] text-white border-[#00C895]">
+                        <span class="text-2xl">⛽</span>
+                        <p class="font-bold">Biometano</p>
                     </div>
-
-                    <!-- Ramo Principal do Gás -->
-                    <div class="flex-1">
-                        <div id="etapa-purificacao" class="flow-node bg-blue-100 border-blue-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-lg sm:text-xl font-semibold text-blue-800">Purificação e Valorização</h3>
-                            <p class="mt-1 text-sm">Separação do Metano (CH₄) e aproveitamento do Dióxido de Carbono (CO₂).</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Ramo do Subproduto -->
-                     <div class="flex-1">
-                        <div id="etapa-subproduto" class="flow-node bg-green-100 border-green-400 rounded-xl shadow-md p-4 w-full text-center h-full">
-                            <h3 class="text-lg sm:text-xl font-semibold text-green-800">Gestão de Subprodutos</h3>
-                            <p class="mt-1 text-sm">O digestato retorna ao campo como biofertilizante.</p>
-                        </div>
+                    <div class="flow-step p-3 rounded-lg text-center shadow-lg bg-[#00A6ED] text-white border-[#00A6ED]">
+                        <span class="text-2xl">❄️</span>
+                        <p class="font-bold">CO₂ Verde</p>
                     </div>
                 </div>
             </div>
-            <div class="arrow"></div>
+        </section>
 
-            <!-- ETAPA 4: ARMAZENAMENTO -->
-            <div id="etapa-armazenamento" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-xl sm:text-2xl font-semibold text-indigo-600">Etapa 4: Armazenamento</h2>
-                <p class="mt-2 text-sm sm:text-base">Compressão e armazenamento do gás purificado em tanques e esferas.</p>
+
+        <section id="investimento" class="py-16 bg-white rounded-2xl shadow-xl">
+            <h3 class="section-title">Detalhamento do Investimento (CAPEX)</h3>
+            <p class="section-subtitle">
+                O CAPEX total de R$ 114,7 milhões para o primeiro módulo é estrategicamente dividido entre as frentes industrial e agrícola para garantir uma fundação robusta e eficiente.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="capexChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#00A6ED]">Investimento Industrial</h4>
+                        <p class="text-3xl font-black text-[#333745]">R$ 94,4 Milhões</p>
+                        <p class="text-gray-600 mt-2">Contempla obras civis, biodigestores, sistema de purificação, motogeradores e toda a infraestrutura da planta.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#00C895]">Investimento Agrícola</h4>
+                        <p class="text-3xl font-black text-[#333745]">R$ 20,4 Milhões</p>
+                        <p class="text-gray-600 mt-2">Cobre o preparo da terra, cultivo, sistema de irrigação e maquinário necessário para o manejo da cana-energia.</p>
+                    </div>
+                </div>
             </div>
-            <div class="arrow"></div>
+        </section>
 
-            <!-- ETAPA 5: DISTRIBUIÇÃO -->
-            <div id="etapa-distribuicao" class="flow-node bg-white rounded-xl shadow-md p-5 w-full md:w-3/4 lg:w-1/2 text-center">
-                <h2 class="text-xl sm:text-2xl font-semibold text-indigo-600">Etapa 5: Distribuição</h2>
-                <p class="mt-2 text-sm sm:text-base">Transporte por caminhões ou injeção em gasoduto para os clientes.</p>
+        <section id="producao" class="py-16">
+            <h3 class="section-title">Volumes e Metas de Produção</h3>
+            <p class="section-subtitle">
+                Projeções para o primeiro ano de operação plena, demonstrando a escala e a eficiência do projeto a partir de uma matéria-prima dedicada e sustentável.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-500">Cana Processada</p>
+                    <p class="text-5xl font-black text-[#00C895]">131k</p>
+                    <p class="text-lg font-semibold text-gray-700">Ton/Ano</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-500">Biogás Produzido</p>
+                    <p class="text-5xl font-black text-[#00A6ED]">23,2 mi</p>
+                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-500">Metano (Venda)</p>
+                    <p class="text-5xl font-black text-[#00A6ED]">10,7 mi</p>
+                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-500">CO₂ Verde (Venda)</p>
+                    <p class="text-5xl font-black text-[#00A6ED]">9,1 mi</p>
+                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
+                </div>
             </div>
+        </section>
+
+
+        <section id="financeiro" class="py-16 bg-white rounded-2xl shadow-xl">
+             <h3 class="section-title">Projeção Financeira (Ano Típico)</h3>
+            <p class="section-subtitle">
+                Uma análise da Demonstração de Resultados (DRE) e dos principais indicadores que confirmam o alto potencial de retorno e a solidez financeira do projeto.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                <div class="lg:col-span-3">
+                    <p class="text-center font-semibold text-gray-600 mb-4">Demonstração de Resultados Simplificada (R$)</p>
+                    <div class="chart-container h-[450px] max-h-[500px] w-full max-w-full">
+                        <canvas id="dreChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="kpi-card">
+                        <p class="text-lg font-semibold text-gray-500">TIR do Projeto</p>
+                        <p class="text-5xl font-black text-[#00C895]">22,4%</p>
+                        <p class="text-lg font-semibold text-gray-700">Retorno atrativo</p>
+                    </div>
+                     <div class="kpi-card">
+                        <p class="text-lg font-semibold text-gray-500">VPL</p>
+                        <p class="text-5xl font-black text-[#00C895]">R$ 43,2 mi</p>
+                        <p class="text-lg font-semibold text-gray-700">(WACC 12%)</p>
+                    </div>
+                    <div class="kpi-card">
+                        <p class="text-lg font-semibold text-gray-500">Payback Descontado</p>
+                        <p class="text-5xl font-black text-[#00C895]">6,7</p>
+                        <p class="text-lg font-semibold text-gray-700">Anos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sensibilidade" class="py-16">
+            <h3 class="section-title">Análise de Sensibilidade</h3>
+            <p class="section-subtitle">
+                A TIR do projeto é altamente sensível ao preço de venda do metano. O gráfico abaixo demonstra a robustez do projeto em diversos cenários de preço, com um upside considerável em condições favoráveis.
+            </p>
+             <div class="bg-white p-6 rounded-2xl shadow-xl">
+                 <div class="chart-container h-96 max-h-[450px] w-full max-w-4xl">
+                    <canvas id="sensibilidadeChart"></canvas>
+                </div>
+             </div>
+        </section>
+
+        <section id="riscos" class="py-16">
+            <h3 class="section-title">Análise de Riscos e Mitigação</h3>
+            <p class="section-subtitle">
+                Identificamos os principais riscos e estabelecemos estratégias claras para mitigá-los, garantindo a segurança e a previsibilidade dos resultados.
+            </p>
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
+                    <h4 class="text-xl font-bold">Risco Tecnológico/Operacional</h4>
+                    <p class="text-sm font-semibold text-yellow-600 mb-2">NÍVEL: MÉDIO</p>
+                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Parcerias com líderes de tecnologia (GranBio, Archea), uso de sistemas de biodigestão comprovados e implantação de um projeto piloto para consolidar aprendizados antes da expansão.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
+                    <h4 class="text-xl font-bold">Risco de Mercado e Preços</h4>
+                    <p class="text-sm font-semibold text-yellow-600 mb-2">NÍVEL: MÉDIO</p>
+                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Foco em contratos de longo prazo (10+ anos) com cláusulas de *take-or-pay*, diversificação de receitas (CO₂, CBios) e flexibilidade para atender diferentes segmentos de mercado.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
+                    <h4 class="text-xl font-bold">Risco Regulatório e Licenciamento</h4>
+                    <p class="text-sm font-semibold text-red-600 mb-2">NÍVEL: ALTO</p>
+                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Cronograma conservador (18 meses), contratação de consultorias especializadas e engajamento proativo com os órgãos reguladores para garantir conformidade e agilidade.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-[#333745] text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-3xl font-bold">Próximos Passos</h3>
+            <p class="mt-4 mb-8 max-w-2xl mx-auto">Estamos prontos para avançar. Convidamos você a se juntar a nós na construção do futuro da energia no Brasil.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="mailto:invest@cygnus.energia" class="bg-[#00A6ED] hover:bg-[#008bc5] text-white font-bold py-3 px-6 rounded-lg transition-colors">Agendar Reunião</a>
+                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-[#333745] font-bold py-3 px-6 rounded-lg transition-colors">Solicitar Due Diligence</a>
+            </div>
+            <p class="text-sm text-gray-400 mt-12">&copy; 2025 Cygnus Energia Renovável. Todos os direitos reservados.</p>
         </div>
-    </div>
+    </footer>
 
-    <!-- Modal para exibir informações detalhadas -->
-    <div id="info-modal" class="modal">
-        <div class="modal-content bg-white p-6 sm:p-8 rounded-lg shadow-2xl w-full sm:w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl">
-            <span class="modal-close absolute top-2 right-4 sm:top-4 sm:right-6 text-gray-500 text-3xl font-bold cursor-pointer">&times;</span>
-            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold mb-4 text-gray-800"></h2>
-            <div id="modal-body" class="text-gray-700 leading-relaxed text-sm sm:text-base"></div>
-        </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mapeamento de IDs para o conteúdo do modal
-            const modalContentData = {
-                'etapa-campo': {
-                    title: 'Etapa 1: Produção da Matéria-Prima',
-                    body: `
-                        <p class="mb-4">Esta fase inicial é a base de todo o processo e envolve as seguintes atividades agrícolas:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Preparo do Solo:</strong> Análise, correção de pH e adubação inicial para garantir a fertilidade.</li>
-                            <li><strong>Plantio e Cultivo:</strong> Plantio da cana-energia, uma variedade otimizada para alta produção de biomassa.</li>
-                            <li><strong>Colheita:</strong> Realizada mecanicamente quando a cana atinge o pico de biomassa.</li>
-                        </ul>
-                    `
-                },
-                'etapa-transporte': {
-                    title: 'Etapa 2: Transporte e Armazenagem',
-                    body: `
-                        <p class="mb-4">Logística eficiente para levar a matéria-prima do campo à indústria:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Transporte:</strong> A cana colhida é transportada por caminhões da lavoura até a planta industrial.</li>
-                            <li><strong>Armazenagem:</strong> A biomassa é descarregada e armazenada em um pátio estratégico, próximo aos biodigestores, para garantir um fluxo de alimentação contínuo.</li>
-                        </ul>
-                    `
-                },
-                'etapa-biodigestao': {
-                    title: 'Etapa 3: Biodigestão Anaeróbica',
-                    body: `
-                        <p class="mb-4">O coração da planta, onde a magia acontece. O processo se divide em:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Pré-tratamento:</strong> A cana é moída e misturada com água para criar um "caldo" homogêneo.</li>
-                            <li><strong>Inoculação:</strong> Fezes de gado são adicionadas como um poderoso inoculante, introduzindo as colônias de bactérias metanogênicas que decompõem a matéria orgânica.</li>
-                            <li><strong>Fermentação:</strong> Dentro dos biodigestores, em um ambiente sem oxigênio, as bactérias consomem a biomassa e produzem o biogás, uma mistura de Metano (CH₄) e Dióxido de Carbono (CO₂).</li>
-                        </ul>
-                    `
-                },
-                 'etapa-energia': {
-                    title: 'Processo de Suporte: Autossuficiência Energética',
-                    body: `
-                        <p class="mb-4">Para garantir a autonomia e sustentabilidade da operação, uma parte do biogás bruto é desviada do fluxo principal.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Moto-Geradores:</strong> O biogás alimenta moto-geradores específicos.</li>
-                            <li><strong>Geração Elétrica:</strong> A queima do gás gera energia elétrica suficiente para alimentar todas as operações da planta (bombas, luzes, sistemas de controle), tornando-a autossuficiente e reduzindo custos operacionais.</li>
-                        </ul>
-                    `
-                },
-                'etapa-purificacao': {
-                    title: 'Processo Principal: Purificação e Valorização',
-                    body: `
-                        <p class="mb-4">Para que o biogás tenha valor comercial, ele precisa ser purificado, transformando-o em biometano. Neste processo, o CO₂ também é separado, tornando-se um subproduto valioso.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Sistema de Separação:</strong> O biogás bruto passa por membranas ou sistemas de filtragem que separam as moléculas de Metano (CH₄) das de Dióxido de Carbono (CO₂).</li>
-                            <li><strong>Biometano (Produto Principal):</strong> O resultado é um gás com alta concentração de metano (>95%), com especificações equivalentes ao gás natural.</li>
-                            <li><strong>CO₂ (Subproduto Valioso):</strong> Em vez de ser liberado, o CO₂ pode ser capturado e purificado para diversos usos, gerando novas receitas e tornando o projeto ainda mais sustentável:</li>
-                        </ul>
-                        <ul class="list-disc list-inside space-y-2 mt-3 pl-5 bg-gray-50 p-4 rounded-lg">
-                            <li><strong>Indústria de Alimentos e Bebidas:</strong> Utilizado na carbonatação de refrigerantes e cervejas.</li>
-                            <li><strong>Produção de Gelo Seco:</strong> Para refrigeração e transporte de produtos sensíveis.</li>
-                            <li><strong>Agricultura:</strong> Injeção em estufas para acelerar o crescimento de plantas (fertirrigação carbônica).</li>
-                            <li><strong>Outras Indústrias:</strong> Uso como gás inerte em soldagem ou na produção de químicos e combustíveis sintéticos (e-fuels).</li>
-                        </ul>
-                    `
-                },
-                'etapa-subproduto': {
-                    title: 'Processo de Suporte: Gestão de Subprodutos',
-                    body: `
-                        <p class="mb-4">O resíduo da biodigestão, chamado de digestato, é um recurso valioso que fecha o ciclo de sustentabilidade do projeto.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Extração:</strong> O digestato (rico em nutrientes como Nitrogênio, Fósforo e Potássio) é retirado dos biodigestores.</li>
-                            <li><strong>Biofertilizante:</strong> Ele é transportado de volta para a lavoura e aplicado no solo.</li>
-                            <li><strong>Economia Circular:</strong> Este processo reduz a necessidade de fertilizantes químicos, diminui custos e enriquece o solo para os próximos ciclos de plantio.</li>
-                        </ul>
-                    `
-                },
-                'etapa-armazenamento': {
-                    title: 'Etapa 4: Armazenamento do Biometano',
-                    body: `
-                        <p class="mb-4">Após a purificação, o biometano precisa ser armazenado de forma segura e eficiente antes da distribuição.</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Armazenamento Primário:</strong> O gás é inicialmente direcionado para tanques de teto flutuante, que servem como um pulmão do sistema.</li>
-                            <li><strong>Compressão e Armazenamento Final:</strong> O biometano é então comprimido a altas pressões e bombeado para grandes esferas de armazenamento, otimizando o volume e preparando-o para o transporte.</li>
-                        </ul>
-                        <p class="mt-4 font-semibold">Meta de Produção Anual: 30.000 Nm³ de metano.</p>
-                    `
-                },
-                'etapa-distribuicao': {
-                    title: 'Etapa 5: Distribuição',
-                    body: `
-                        <p class="mb-4">A etapa final, onde o produto chega ao mercado através de duas principais modalidades:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><strong>Transporte Rodoviário:</strong> O biometano é transferido das esferas para caminhões-tanque (carretas de gás comprimido) para entrega flexível a clientes industriais ou postos de GNV.</li>
-                            <li><strong>Gasoduto:</strong> O gás é injetado diretamente em um gasoduto, permitindo o transporte contínuo e em grande volume para centros consumidores ou para a malha de distribuição de gás natural.</li>
-                        </ul>
-                    `
-                }
-            };
+<script>
+    function wrapLabels(label) {
+        const maxLength = 16;
+        if (typeof label !== 'string' || label.length <= maxLength) {
+            return label;
+        }
+        
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
 
-            const modal = document.getElementById('info-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            const closeButton = document.querySelector('.modal-close');
-
-            document.querySelectorAll('.flow-node').forEach(node => {
-                node.addEventListener('click', () => {
-                    const content = modalContentData[node.id];
-                    if (content) {
-                        modalTitle.textContent = content.title;
-                        modalBody.innerHTML = content.body;
-                        modal.style.display = 'flex'; // Mudar para flex para ativar a centralização
-                    }
-                });
-            });
-
-            // Função para fechar o modal
-            const closeModal = () => {
-                modal.style.display = 'none';
-            };
-
-            closeButton.addEventListener('click', closeModal);
-
-            // Fechar o modal ao clicar fora da área de conteúdo
-            window.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal();
-                }
-            });
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
         });
-    </script>
+        lines.push(currentLine.trim());
+        return lines;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        }
+        return label;
+    };
+
+    const sharedChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#333745',
+                    font: {
+                        family: 'Inter',
+                        size: 14,
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                backgroundColor: '#333745',
+                titleFont: { family: 'Inter', size: 16 },
+                bodyFont: { family: 'Inter', size: 14 },
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#555', font: { family: 'Inter' } },
+                grid: { display: false }
+            },
+            y: {
+                ticks: { color: '#555', font: { family: 'Inter' } },
+                grid: { color: '#e0e0e0', borderDash: [5, 5] }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('capexChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Investimento Industrial', 'Investimento Agrícola'],
+            datasets: [{
+                data: [94352557, 20370000],
+                backgroundColor: ['#00A6ED', '#00C895'],
+                borderColor: '#F7F7F7',
+                borderWidth: 4
+            }]
+        },
+        options: {
+            ...sharedChartOptions,
+            scales: { x: { display: false }, y: { display: false } },
+            cutout: '70%',
+            plugins: {
+                ...sharedChartOptions.plugins,
+                legend: {
+                    position: 'bottom',
+                    ...sharedChartOptions.plugins.legend
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('dreChart'), {
+        type: 'bar',
+        data: {
+            labels: [wrapLabels('Receita Bruta'), 'EBITDA', wrapLabels('Lucro Líquido')],
+            datasets: [
+                {
+                    label: 'Valor (R$)',
+                    data: [36107705, 13969657, 3724041],
+                    backgroundColor: ['#00C895', '#00A6ED', '#2ecc71'],
+                    borderRadius: 5,
+                }
+            ]
+        },
+        options: {
+            ...sharedChartOptions,
+            indexAxis: 'y',
+             plugins: {
+                legend: { display: false },
+                tooltip: {
+                    ...sharedChartOptions.plugins.tooltip,
+                    callbacks: {
+                        label: function(context) {
+                            return ` R$ ${context.parsed.x.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`;
+                        },
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                 x: {
+                    ticks: {
+                        callback: function(value, index, values) {
+                           return (value / 1,000,000) + 'M';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('sensibilidadeChart'), {
+        type: 'line',
+        data: {
+            labels: ['R$ 2,80', 'R$ 3,00', 'R$ 3,20', 'R$ 3,40', 'R$ 3,60'],
+            datasets: [{
+                label: 'TIR do Projeto',
+                data: [16.5, 19.5, 22.4, 25.2, 28.0],
+                borderColor: '#00C895',
+                backgroundColor: 'rgba(0, 200, 149, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#00C895',
+                pointRadius: 5,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            ...sharedChartOptions,
+            plugins: {
+                ...sharedChartOptions.plugins,
+                legend: { display: false },
+                tooltip: {
+                     ...sharedChartOptions.plugins.tooltip,
+                    callbacks: {
+                        label: function(context) {
+                            return ` TIR: ${context.parsed.y}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ...sharedChartOptions.scales.y,
+                    title: { display: true, text: 'Taxa Interna de Retorno (%)', color: '#333745', font: { size: 14, weight: 'bold' } },
+                    ticks: {
+                        callback: function(value) { return value + '%'; }
+                    }
+                },
+                x: {
+                    ...sharedChartOptions.scales.x,
+                    title: { display: true, text: 'Preço de Venda do Metano (R$/Nm³)', color: '#333745', font: { size: 14, weight: 'bold' } }
+                }
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
