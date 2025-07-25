@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Chart.js and chartjs-adapter-date-fns -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Google Fonts: Inter -->
@@ -49,6 +49,17 @@
             height: 400px;
             width: 100%;
         }
+        /* Styles for the process flow */
+        .process-step {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .process-arrow {
+            color: #cbd5e1; /* slate-300 */
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -65,6 +76,7 @@
             </div>
             <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
                 <a href="#slide-1" class="text-slate-600 hover:text-orange-500 transition-colors">Visão Geral</a>
+                <a href="#slide-concept" class="text-slate-600 hover:text-orange-500 transition-colors">Conceito</a>
                 <a href="#slide-2" class="text-slate-600 hover:text-orange-500 transition-colors">Investimento</a>
                 <a href="#slide-3" class="text-slate-600 hover:text-orange-500 transition-colors">Receitas</a>
                 <a href="#slide-4" class="text-slate-600 hover:text-orange-500 transition-colors">Riscos</a>
@@ -105,8 +117,60 @@
             </div>
         </section>
 
+        <!-- Slide: Conceito Técnico / Fluxo de Processo -->
+        <section id="slide-concept" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Conceito Técnico do Projeto</h2>
+                    <p class="mt-3 text-lg text-slate-600">Um ciclo completo e sustentável, da lavoura ao gás renovável.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-y-8 md:gap-x-4 items-start justify-items-center">
+                    <!-- Step 1 -->
+                    <div class="text-center w-full flex flex-col items-center">
+                        <div class="process-step bg-white rounded-2xl p-6 w-48 h-48 flex flex-col justify-center items-center shadow-lg border border-slate-200/50">
+                            <svg class="h-16 w-16 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 10.5v3.75c0 .621-.504 1.125-1.125 1.125H4.875c-.621 0-1.125-.504-1.125-1.125V10.5m16.5 0S20.25 3.75 12 3.75 3.75 10.5 3.75 10.5m16.5 0c0 .621-.504 1.125-1.125 1.125H4.875c-.621 0-1.125-.504-1.125-1.125m16.5 0c0-3.453-2.13-6.42-5.021-7.525C13.21 2.34 10.79 2.34 8.77 2.975 5.879 4.08 3.75 7.047 3.75 10.5" /></svg>
+                        </div>
+                        <h3 class="font-bold mt-4 text-slate-800">1. Cultivo</h3>
+                        <p class="text-sm text-slate-500 mt-1">Plantio e colheita da cana-energia em área própria.</p>
+                    </div>
+                    <!-- Arrow 1 -->
+                    <div class="hidden md:flex items-center justify-center h-48">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 process-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center w-full flex flex-col items-center">
+                        <div class="process-step bg-white rounded-2xl p-6 w-48 h-48 flex flex-col justify-center items-center shadow-lg border border-slate-200/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-orange-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mt-4 text-slate-800">2. Biodigestão</h3>
+                        <p class="text-sm text-slate-500 mt-1">Conversão da biomassa em biogás em reatores anaeróbicos.</p>
+                    </div>
+                    <!-- Arrow 2 -->
+                    <div class="hidden md:flex items-center justify-center h-48">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 process-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center w-full flex flex-col items-center">
+                        <div class="process-step bg-white rounded-2xl p-6 w-48 h-48 flex flex-col justify-center items-center shadow-lg border border-slate-200/50">
+                            <div class="text-center">
+                                <h4 class="font-bold text-2xl text-emerald-600">CH₄</h4>
+                                <div class="text-slate-400 my-1">Biometano</div>
+                                <div class="w-24 h-px bg-slate-200 mx-auto my-2"></div>
+                                <h4 class="font-bold text-2xl text-sky-600">CO₂</h4>
+                                <div class="text-slate-400 my-1">Gás Carbônico</div>
+                            </div>
+                        </div>
+                        <h3 class="font-bold mt-4 text-slate-800">3. Produtos</h3>
+                        <p class="text-sm text-slate-500 mt-1">Purificação do biogás, gerando Biometano e CO₂ para venda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Slide 2: Detalhamento do Investimento (CAPEX) -->
-        <section id="slide-2" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
+        <section id="slide-2" class="py-16 md:py-24 my-12 fade-in">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Estrutura de Investimento (CAPEX)</h2>
@@ -131,7 +195,7 @@
         </section>
 
         <!-- Slide 3: Detalhamento das Receitas (Ano 1) -->
-        <section id="slide-3" class="py-16 md:py-24 my-12 fade-in">
+        <section id="slide-3" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Composição da Receita (Ano 1)</h2>
@@ -161,7 +225,7 @@
         </section>
 
         <!-- Slide 4: Análise de Riscos e Sensibilidade -->
-        <section id="slide-4" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
+        <section id="slide-4" class="py-16 md:py-24 my-12 fade-in">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Análise de Riscos e Sensibilidade</h2>
@@ -248,7 +312,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            Chart.defaults.font.family = 'Inter, sans-serif';
+            Chart.defaults.font.family = 'Inter', 'sans-serif';
             Chart.defaults.color = '#334155';
             
             const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', notation: 'compact', compactDisplay: 'short' }).format(value);
@@ -282,36 +346,20 @@
             // Monte Carlo Chart
             const monteCarloCtx = document.getElementById('monteCarloChart');
             if (monteCarloCtx) {
-                // Function to generate normally distributed random numbers (Box-Muller transform)
                 const gaussianRandom = (mean, stdDev) => {
                     let u1, u2;
-                    do {
-                        u1 = Math.random();
-                        u2 = Math.random();
-                    } while (u1 === 0);
-                    const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-                    return z0 * stdDev + mean;
+                    do { u1 = Math.random(); u2 = Math.random(); } while (u1 === 0);
+                    return (Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2)) * stdDev + mean;
                 };
 
-                const meanVPL = 17.03; // in millions
-                const stdDevVPL = 7.85; // in millions, calculated to have ~1.5% probability of being < 0
-                const numSamples = 10000;
+                const meanVPL = 17.03; const stdDevVPL = 7.85; const numSamples = 10000;
                 const samples = Array.from({ length: numSamples }, () => gaussianRandom(meanVPL, stdDevVPL));
-
-                // Bin the data
-                const binSize = 5; // 5 million
-                const minBin = -10;
-                const maxBin = 50;
+                const binSize = 5; const minBin = -10; const maxBin = 50;
                 const bins = {};
-                for (let i = minBin; i <= maxBin; i += binSize) {
-                    bins[i] = 0;
-                }
-
+                for (let i = minBin; i <= maxBin; i += binSize) { bins[i] = 0; }
                 samples.forEach(sample => {
                     const bin = Math.floor(sample / binSize) * binSize;
-                    if (bins[bin] !== undefined) {
-                        bins[bin]++;
-                    }
+                    if (bins[bin] !== undefined) { bins[bin]++; }
                 });
 
                 const labels = Object.keys(bins).map(Number);
@@ -326,67 +374,25 @@
                             data: data,
                             backgroundColor: labels.map(l => l < 0 ? 'rgba(239, 68, 68, 0.6)' : 'rgba(249, 115, 22, 0.6)'),
                             borderColor: labels.map(l => l < 0 ? 'rgb(239, 68, 68)' : 'rgb(249, 115, 22)'),
-                            borderWidth: 1,
-                            barPercentage: 1.0,
-                            categoryPercentage: 1.0,
+                            borderWidth: 1, barPercentage: 1.0, categoryPercentage: 1.0,
                         }]
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: { 
-                                beginAtZero: true,
-                                title: { display: true, text: 'Frequência' }
-                            },
-                            x: {
-                                title: { display: true, text: 'VPL (R$)'}
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    title: (c) => `Faixa de VPL: ${c[0].label} a ${parseInt(c[0].label) + binSize} mi`,
-                                    label: (c) => `Ocorrências: ${c.raw}`
-                                }
-                            },
-                            annotation: { // This is a placeholder, requires a plugin not loaded by default
-                                annotations: {
-                                    line1: {
-                                        type: 'line',
-                                        xMin: meanVPL,
-                                        xMax: meanVPL,
-                                        borderColor: 'rgb(16, 185, 129)',
-                                        borderWidth: 2,
-                                        label: {
-                                            content: `Média: ${meanVPL} mi`,
-                                            enabled: true,
-                                            position: 'top'
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: true, title: { display: true, text: 'Frequência' } }, x: { title: { display: true, text: 'VPL (R$)'} } },
+                        plugins: { legend: { display: false }, tooltip: { callbacks: { title: (c) => `Faixa de VPL: ${c[0].label} a ${parseInt(c[0].label) + binSize} mi`, label: (c) => `Ocorrências: ${c.raw}` } } }
                     }
                 });
             }
-
 
             // Fade-in animation on scroll
             const fadeInElements = document.querySelectorAll('.fade-in');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fadeIn');
-                    }
+                    if (entry.isIntersecting) { entry.target.style.animation = 'fadeIn 0.8s ease-out forwards'; }
                 });
             }, { threshold: 0.1 });
-
-            fadeInElements.forEach(el => {
-                el.style.opacity = '0';
-                observer.observe(el);
-            });
+            fadeInElements.forEach(el => { el.style.opacity = '0'; observer.observe(el); });
         });
     </script>
 </body>
