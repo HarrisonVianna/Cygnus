@@ -1,475 +1,404 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto Cygnus - Oportunidade de Investimento</title>
+    <title>Apresentação Interativa - Projeto Cygnus</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- 
-    Narrative Plan:
-    1. Hook: Title and Subtitle - The big picture of renewable energy.
-    2. The Solution: Introduce Cygnus and its value proposition.
-    3. The Process: A flowchart from raw material to revenue.
-    4. Investment (CAPEX): A donut chart to break down the investment.
-    5. Production Volumes: Big number cards for key annual metrics.
-    6. Financial Returns (DRE): A stacked bar chart showing the path from revenue to profit.
-    7. Key Indicators: Big number cards for TIR, VPL, and Payback.
-    8. Sensitivity Analysis: A line chart showing IRR vs. Methane Price.
-    9. Risk Analysis: A structured HTML grid for risks and mitigations.
-    10. Call to Action: Next steps for the investor.
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    Color Palette Selection: Vibrant & Trustworthy (#00A6ED, #00C895, #333745, #F7F7F7)
-    
-    Visualization Choices:
-    - CAPEX Breakdown: Donut Chart (Chart.js) - Goal: Compare. Ideal for showing composition of a whole. No SVG.
-    - Production Volumes: Big Number Cards (HTML/CSS) - Goal: Inform. Highlights key stats effectively. No SVG.
-    - Simplified DRE: Bar Chart (Chart.js) - Goal: Compare. Visually breaks down revenue into costs and profit. No SVG.
-    - Investment Indicators: Big Number Cards (HTML/CSS) - Goal: Inform. Makes financial KPIs stand out. No SVG.
-    - Sensitivity Analysis: Line Chart (Chart.js) - Goal: Relationships. Perfect for showing correlation between two variables. No SVG.
-    - Risk Matrix: Styled HTML Grid (HTML/CSS) - Goal: Organize. Clear, structured presentation of qualitative data. No SVG.
-    - Project Flowchart: Styled HTML Flexbox (HTML/CSS) - Goal: Organize. Shows a process flow without needing MermaidJS or SVG.
-    
-    Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
-    -->
     <style>
+        /* Custom styles to apply the Inter font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F7F7F7;
-            color: #333745;
+            scroll-behavior: smooth;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
         }
-        .kpi-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        ::-webkit-scrollbar-thumb {
+            background: #f97316;
+            border-radius: 10px;
         }
-        .kpi-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ea580c;
         }
-        .flow-step {
-            background-color: white;
-            border: 2px solid #00A6ED;
-            color: #333745;
+        /* Animation for elements fading in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .flow-arrow {
-            color: #00A6ED;
-        }
-        .section-title {
-            font-weight: 900;
-            font-size: 2.25rem;
-            line-height: 2.5rem;
-            color: #333745;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .section-subtitle {
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-            color: #555;
-            text-align: center;
-            max-width: 48rem;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 3rem;
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-slate-50 text-slate-800">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-[#333745]">Cygnus Energia</h1>
-            <ul class="flex space-x-6">
-                <li><a href="#investimento" class="text-gray-600 hover:text-[#00A6ED]">Investimento</a></li>
-                <li><a href="#financeiro" class="text-gray-600 hover:text-[#00A6ED]">Financeiro</a></li>
-                <li><a href="#riscos" class="text-gray-600 hover:text-[#00A6ED]">Riscos</a></li>
-            </ul>
-        </nav>
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="h-8 w-8 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.282 10.647a8.955 8.955 0 01-1.88.213 8.955 8.955 0 01-1.88-.213 8.955 8.955 0 00-1.88.213 8.955 8.955 0 00-1.88-.213 8.955 8.955 0 01-1.88.213 8.955 8.955 0 01-1.88-.213 8.955 8.955 0 00-1.88.213 8.955 8.955 0 00-1.88-.213A8.952 8.952 0 012.718 10.647a8.952 8.952 0 01-1.88.213m20.248 0a8.952 8.952 0 00-1.88-.213m-16.488 0A8.955 8.955 0 014.598 10.86m14.804 0a8.955 8.955 0 00-1.88-.213M9.238 10.86a8.955 8.955 0 01-1.88-.213m4.642 4.02a1.125 1.125 0 10-2.25 0 1.125 1.125 0 002.25 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a8.955 8.955 0 01-1.88-.213 8.955 8.955 0 01-1.88.213 8.955 8.955 0 00-1.88-.213 8.955 8.955 0 00-1.88.213 8.955 8.955 0 01-1.88-.213 8.955 8.955 0 01-1.88.213A8.952 8.952 0 012.718 21.213a8.952 8.952 0 01-1.88.213m20.248 0a8.952 8.952 0 00-1.88-.213m-16.488 0A8.955 8.955 0 014.598 21.21m14.804 0a8.955 8.955 0 00-1.88-.213M9.238 21.21a8.955 8.955 0 01-1.88-.213M3 10.86a8.962 8.962 0 011.05-4.283 8.962 8.962 0 014.283-4.283 8.962 8.962 0 018.566 0 8.962 8.962 0 014.283 4.283 8.962 8.962 0 01-4.283 12.849 8.962 8.962 0 01-8.566 0 8.962 8.962 0 01-4.283-4.283A8.962 8.962 0 013 10.86z" />
+                </svg>
+                <h1 class="text-xl font-bold text-slate-900">Projeto <span class="text-orange-500">Cygnus</span></h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
+                <a href="#slide-1" class="text-slate-600 hover:text-orange-500 transition-colors">Visão Geral</a>
+                <a href="#slide-2" class="text-slate-600 hover:text-orange-500 transition-colors">Investimento</a>
+                <a href="#slide-3" class="text-slate-600 hover:text-orange-500 transition-colors">Receitas</a>
+                <a href="#slide-4" class="text-slate-600 hover:text-orange-500 transition-colors">Desembolsos</a>
+                <a href="#slide-5" class="text-slate-600 hover:text-orange-500 transition-colors">Viabilidade</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-
-        <section id="hero" class="text-center py-16">
-            <h2 class="text-5xl font-black text-[#333745] mb-4">Projeto Cygnus</h2>
-            <p class="text-2xl text-gray-700 font-semibold mb-8">Uma Oportunidade Única de Investimento no Futuro da Energia Renovável no Brasil.</p>
-            <p class="max-w-3xl mx-auto text-lg text-gray-600">
-                A Cygnus transforma cana-energia em biometano e CO2 verde, oferecendo uma solução de energia firme, escalável e de baixo carbono, perfeitamente alinhada com as metas ESG e a crescente demanda por combustíveis sustentáveis.
-            </p>
-        </section>
-
-        <section id="processo" class="py-16">
-            <h3 class="section-title">Do Campo ao Gás: Nosso Processo</h3>
-            <p class="section-subtitle">
-                Utilizamos um processo integrado e eficiente para converter biomassa em produtos de alto valor agregado, garantindo autossuficiência energética e sustentabilidade.
-            </p>
-            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
-                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
-                    <span class="text-4xl">🌿</span>
-                    <p class="font-bold">Cana-Energia</p>
-                    <p class="text-sm">Cultivo Dedicado</p>
-                </div>
-                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
-                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
-                    <span class="text-4xl">⚙️</span>
-                    <p class="font-bold">Biodigestão</p>
-                    <p class="text-sm">Produção de Biogás</p>
-                </div>
-                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
-                <div class="flow-step p-4 rounded-lg text-center shadow-lg">
-                    <span class="text-4xl">💨</span>
-                    <p class="font-bold">Purificação</p>
-                    <p class="text-sm">Upgrading do Gás</p>
-                </div>
-                <div class="flow-arrow text-4xl font-bold transform md:rotate-0 rotate-90">&rarr;</div>
-                <div class="flex flex-col space-y-2">
-                    <div class="flow-step p-3 rounded-lg text-center shadow-lg bg-[#00C895] text-white border-[#00C895]">
-                        <span class="text-2xl">⛽</span>
-                        <p class="font-bold">Biometano</p>
-                    </div>
-                    <div class="flow-step p-3 rounded-lg text-center shadow-lg bg-[#00A6ED] text-white border-[#00A6ED]">
-                        <span class="text-2xl">❄️</span>
-                        <p class="font-bold">CO₂ Verde</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="investimento" class="py-16 bg-white rounded-2xl shadow-xl">
-            <h3 class="section-title">Detalhamento do Investimento (CAPEX)</h3>
-            <p class="section-subtitle">
-                O CAPEX total de R$ 114,7 milhões para o primeiro módulo é estrategicamente dividido entre as frentes industrial e agrícola para garantir uma fundação robusta e eficiente.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="chart-container">
-                    <canvas id="capexChart"></canvas>
-                </div>
-                <div class="space-y-4">
-                    <div class="p-6 bg-gray-50 rounded-lg">
-                        <h4 class="text-xl font-bold text-[#00A6ED]">Investimento Industrial</h4>
-                        <p class="text-3xl font-black text-[#333745]">R$ 94,4 Milhões</p>
-                        <p class="text-gray-600 mt-2">Contempla obras civis, biodigestores, sistema de purificação, motogeradores e toda a infraestrutura da planta.</p>
-                    </div>
-                    <div class="p-6 bg-gray-50 rounded-lg">
-                        <h4 class="text-xl font-bold text-[#00C895]">Investimento Agrícola</h4>
-                        <p class="text-3xl font-black text-[#333745]">R$ 20,4 Milhões</p>
-                        <p class="text-gray-600 mt-2">Cobre o preparo da terra, cultivo, sistema de irrigação e maquinário necessário para o manejo da cana-energia.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="producao" class="py-16">
-            <h3 class="section-title">Volumes e Metas de Produção</h3>
-            <p class="section-subtitle">
-                Projeções para o primeiro ano de operação plena, demonstrando a escala e a eficiência do projeto a partir de uma matéria-prima dedicada e sustentável.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="kpi-card">
-                    <p class="text-lg font-semibold text-gray-500">Cana Processada</p>
-                    <p class="text-5xl font-black text-[#00C895]">131k</p>
-                    <p class="text-lg font-semibold text-gray-700">Ton/Ano</p>
-                </div>
-                <div class="kpi-card">
-                    <p class="text-lg font-semibold text-gray-500">Biogás Produzido</p>
-                    <p class="text-5xl font-black text-[#00A6ED]">23,2 mi</p>
-                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
-                </div>
-                <div class="kpi-card">
-                    <p class="text-lg font-semibold text-gray-500">Metano (Venda)</p>
-                    <p class="text-5xl font-black text-[#00A6ED]">10,7 mi</p>
-                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
-                </div>
-                <div class="kpi-card">
-                    <p class="text-lg font-semibold text-gray-500">CO₂ Verde (Venda)</p>
-                    <p class="text-5xl font-black text-[#00A6ED]">9,1 mi</p>
-                    <p class="text-lg font-semibold text-gray-700">Nm³/Ano</p>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="financeiro" class="py-16 bg-white rounded-2xl shadow-xl">
-             <h3 class="section-title">Projeção Financeira (Ano Típico)</h3>
-            <p class="section-subtitle">
-                Uma análise da Demonstração de Resultados (DRE) e dos principais indicadores que confirmam o alto potencial de retorno e a solidez financeira do projeto.
-            </p>
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-                <div class="lg:col-span-3">
-                    <p class="text-center font-semibold text-gray-600 mb-4">Demonstração de Resultados Simplificada (R$)</p>
-                    <div class="chart-container h-[450px] max-h-[500px] w-full max-w-full">
-                        <canvas id="dreChart"></canvas>
-                    </div>
-                </div>
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="kpi-card">
-                        <p class="text-lg font-semibold text-gray-500">TIR do Projeto</p>
-                        <p class="text-5xl font-black text-[#00C895]">22,4%</p>
-                        <p class="text-lg font-semibold text-gray-700">Retorno atrativo</p>
-                    </div>
-                     <div class="kpi-card">
-                        <p class="text-lg font-semibold text-gray-500">VPL</p>
-                        <p class="text-5xl font-black text-[#00C895]">R$ 43,2 mi</p>
-                        <p class="text-lg font-semibold text-gray-700">(WACC 12%)</p>
-                    </div>
-                    <div class="kpi-card">
-                        <p class="text-lg font-semibold text-gray-500">Payback Descontado</p>
-                        <p class="text-5xl font-black text-[#00C895]">6,7</p>
-                        <p class="text-lg font-semibold text-gray-700">Anos</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <main class="container mx-auto p-4 md:p-8">
         
-        <section id="sensibilidade" class="py-16">
-            <h3 class="section-title">Análise de Sensibilidade</h3>
-            <p class="section-subtitle">
-                A TIR do projeto é altamente sensível ao preço de venda do metano. O gráfico abaixo demonstra a robustez do projeto em diversos cenários de preço, com um upside considerável em condições favoráveis.
-            </p>
-             <div class="bg-white p-6 rounded-2xl shadow-xl">
-                 <div class="chart-container h-96 max-h-[450px] w-full max-w-4xl">
-                    <canvas id="sensibilidadeChart"></canvas>
+        <!-- Slide 1: Capa e Indicadores Chave -->
+        <section id="slide-1" class="min-h-[80vh] flex flex-col justify-center items-center text-center py-12 fade-in">
+            <div class="max-w-4xl">
+                <h2 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                    Transformando <span class="text-emerald-500">Biomassa</span> em <span class="text-orange-500">Energia Renovável</span>
+                </h2>
+                <p class="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                    Análise de Viabilidade Econômico-Financeira do Projeto Cygnus para produção de Biometano a partir da Cana-Energia.
+                </p>
+                <p class="mt-2 text-sm text-slate-500">(Cenário Base: Preço do Metano a R$ 3,10/Nm³)</p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-5xl">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-lg font-semibold text-slate-500">VPL</h3>
+                    <p class="text-4xl font-bold text-emerald-500 mt-2">R$ 22,08 mi</p>
+                    <p class="text-sm text-slate-500 mt-2">Valor Presente Líquido</p>
                 </div>
-             </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-lg font-semibold text-slate-500">TIR</h3>
+                    <p class="text-4xl font-bold text-emerald-500 mt-2">30,95%</p>
+                    <p class="text-sm text-slate-500 mt-2">Taxa Interna de Retorno (a.a.)</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-lg font-semibold text-slate-500">Payback Descontado</h3>
+                    <p class="text-4xl font-bold text-emerald-500 mt-2">8,6 anos</p>
+                    <p class="text-sm text-slate-500 mt-2">Retorno do Investimento</p>
+                </div>
+            </div>
         </section>
 
-        <section id="riscos" class="py-16">
-            <h3 class="section-title">Análise de Riscos e Mitigação</h3>
-            <p class="section-subtitle">
-                Identificamos os principais riscos e estabelecemos estratégias claras para mitigá-los, garantindo a segurança e a previsibilidade dos resultados.
-            </p>
-            <div class="space-y-6 max-w-4xl mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
-                    <h4 class="text-xl font-bold">Risco Tecnológico/Operacional</h4>
-                    <p class="text-sm font-semibold text-yellow-600 mb-2">NÍVEL: MÉDIO</p>
-                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Parcerias com líderes de tecnologia (GranBio, Archea), uso de sistemas de biodigestão comprovados e implantação de um projeto piloto para consolidar aprendizados antes da expansão.</p>
+        <!-- Slide 2: Detalhamento do Investimento (CAPEX) -->
+        <section id="slide-2" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Estrutura de Investimento (CAPEX)</h2>
+                    <p class="mt-3 text-lg text-slate-600">Investimento total de <span class="font-bold text-orange-500">R$ 93,6 milhões</span> para implantação do projeto.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
-                    <h4 class="text-xl font-bold">Risco de Mercado e Preços</h4>
-                    <p class="text-sm font-semibold text-yellow-600 mb-2">NÍVEL: MÉDIO</p>
-                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Foco em contratos de longo prazo (10+ anos) com cláusulas de *take-or-pay*, diversificação de receitas (CO₂, CBios) e flexibilidade para atender diferentes segmentos de mercado.</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                    <div class="md:col-span-2">
+                        <canvas id="capexChart"></canvas>
+                    </div>
+                    <div class="md:col-span-3 space-y-4">
+                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-xl text-emerald-600">CAPEX Industrial</h4>
+                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 83,75 mi</p>
+                            <p class="text-sm text-slate-500 mt-2">Inclui biodigestores, purificadores, motogeradores, obras civis e toda a infraestrutura de processamento.</p>
+                        </div>
+                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-xl text-orange-600">CAPEX Agrícola</h4>
+                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 9,85 mi</p>
+                            <p class="text-sm text-slate-500 mt-2">Contempla o preparo do solo, plantio, sistemas de irrigação e maquinário para o cultivo da cana-energia.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
-                    <h4 class="text-xl font-bold">Risco Regulatório e Licenciamento</h4>
-                    <p class="text-sm font-semibold text-red-600 mb-2">NÍVEL: ALTO</p>
-                    <p class="text-gray-600"><strong class="text-gray-800">Estratégia:</strong> Cronograma conservador (18 meses), contratação de consultorias especializadas e engajamento proativo com os órgãos reguladores para garantir conformidade e agilidade.</p>
+            </div>
+        </section>
+
+        <!-- Slide 3: Detalhamento das Receitas (Ano 1) -->
+        <section id="slide-3" class="py-16 md:py-24 my-12 fade-in">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Composição da Receita (Ano 1)</h2>
+                    <p class="mt-3 text-lg text-slate-600">Receita bruta total projetada de <span class="font-bold text-emerald-500">R$ 31,84 milhões</span> no primeiro ano de operação.</p>
                 </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <!-- Card Metano -->
+                        <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
+                            <h4 class="font-bold text-xl text-orange-500">Venda de Metano (CH₄)</h4>
+                            <div class="flex justify-between items-baseline mt-2">
+                                <span class="text-3xl font-extrabold text-slate-800">R$ 30,22 mi</span>
+                                <span class="text-lg font-semibold text-emerald-600">94,9%</span>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
+                                <p><span class="font-semibold">Volume:</span> 9,75 mi Nm³</p>
+                                <p><span class="font-semibold">Preço:</span> R$ 3,10 / Nm³</p>
+                            </div>
+                        </div>
+                        <!-- Card CO2 -->
+                         <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
+                            <h4 class="font-bold text-xl text-sky-500">Venda de CO₂</h4>
+                            <div class="flex justify-between items-baseline mt-2">
+                                <span class="text-3xl font-extrabold text-slate-800">R$ 0,80 mi</span>
+                                <span class="text-lg font-semibold text-emerald-600">2,5%</span>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
+                                <p><span class="font-semibold">Volume:</span> 5,0 mil t</p>
+                                <p><span class="font-semibold">Preço:</span> R$ 160 / t</p>
+                            </div>
+                        </div>
+                        <!-- Card CBios -->
+                         <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
+                            <h4 class="font-bold text-xl text-green-500">Venda de CBios</h4>
+                            <div class="flex justify-between items-baseline mt-2">
+                                <span class="text-3xl font-extrabold text-slate-800">R$ 0,82 mi</span>
+                                <span class="text-lg font-semibold text-emerald-600">2,6%</span>
+                            </div>
+                             <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
+                                <p><span class="font-semibold">Volume:</span> 29,6 mil créditos</p>
+                                <p><span class="font-semibold">Preço:</span> R$ 27,80 / crédito</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="w-full max-w-md mx-auto">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Detalhamento dos Desembolsos (Ano 1) -->
+        <section id="slide-4" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Desembolsos Operacionais (Ano 1)</h2>
+                    <p class="mt-3 text-lg text-slate-600">Saídas de caixa totais de <span class="font-bold text-red-500">R$ 14,37 milhões</span> no primeiro ano.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                     <div class="md:col-span-3 space-y-4">
+                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-xl text-slate-600">Custos Operacionais (OPEX)</h4>
+                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 12,38 mi</p>
+                            <p class="text-sm text-slate-500 mt-2">Inclui arrendamento, tratos culturais, salários, manutenção, royalties e outros custos fixos e variáveis.</p>
+                        </div>
+                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-xl text-red-600">Impostos sobre Faturamento</h4>
+                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 1,99 mi</p>
+                            <p class="text-sm text-slate-500 mt-2">Considera PIS, COFINS, IRPJ e CSLL sob o regime de Lucro Presumido.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <canvas id="disbursementsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Conclusão e Viabilidade -->
+        <section id="slide-5" class="py-16 md:py-24 text-center fade-in">
+             <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Parecer Técnico: <span class="text-emerald-500">Viável</span></h2>
+                <p class="mt-6 text-lg text-slate-600">
+                    Com a premissa de venda do metano a R$ 3,10/Nm³, o Projeto Cygnus demonstra ser financeiramente robusto e atrativo. A Taxa Interna de Retorno de <strong>30,95%</strong> supera com folga a Taxa Mínima de Atratividade (25%), e o VPL de <strong>R$ 22,08 milhões</strong> confirma a geração de valor do projeto.
+                </p>
+                 <a href="#slide-1" class="mt-8 inline-block bg-orange-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-orange-600 transition-colors shadow-lg">
+                    Revisar Indicadores
+                </a>
             </div>
         </section>
 
     </main>
     
-    <footer class="bg-[#333745] text-white py-12">
-        <div class="container mx-auto px-6 text-center">
-            <h3 class="text-3xl font-bold">Próximos Passos</h3>
-            <p class="mt-4 mb-8 max-w-2xl mx-auto">Estamos prontos para avançar. Convidamos você a se juntar a nós na construção do futuro da energia no Brasil.</p>
-            <div class="flex justify-center space-x-4">
-                <a href="mailto:invest@cygnus.energia" class="bg-[#00A6ED] hover:bg-[#008bc5] text-white font-bold py-3 px-6 rounded-lg transition-colors">Agendar Reunião</a>
-                <a href="#" class="bg-gray-200 hover:bg-gray-300 text-[#333745] font-bold py-3 px-6 rounded-lg transition-colors">Solicitar Due Diligence</a>
-            </div>
-            <p class="text-sm text-gray-400 mt-12">&copy; 2025 Cygnus Energia Renovável. Todos os direitos reservados.</p>
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p>&copy; 2025 Projeto Cygnus. Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Este é um documento confidencial. As informações aqui contidas são de propriedade da Cygnus.</p>
         </div>
     </footer>
 
-
-<script>
-    function wrapLabels(label) {
-        const maxLength = 16;
-        if (typeof label !== 'string' || label.length <= maxLength) {
-            return label;
-        }
-        
-        const words = label.split(' ');
-        const lines = [];
-        let currentLine = '';
-
-        words.forEach(word => {
-            if ((currentLine + ' ' + word).trim().length > maxLength) {
-                lines.push(currentLine.trim());
-                currentLine = word;
-            } else {
-                currentLine = (currentLine + ' ' + word).trim();
-            }
-        });
-        lines.push(currentLine.trim());
-        return lines;
-    }
-
-    const tooltipTitleCallback = (tooltipItems) => {
-        const item = tooltipItems[0];
-        let label = item.chart.data.labels[item.dataIndex];
-        if (Array.isArray(label)) {
-            return label.join(' ');
-        }
-        return label;
-    };
-
-    const sharedChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#333745',
-                    font: {
-                        family: 'Inter',
-                        size: 14,
-                    }
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    title: tooltipTitleCallback
-                },
-                backgroundColor: '#333745',
-                titleFont: { family: 'Inter', size: 16 },
-                bodyFont: { family: 'Inter', size: 14 },
-            }
-        },
-        scales: {
-            x: {
-                ticks: { color: '#555', font: { family: 'Inter' } },
-                grid: { display: false }
-            },
-            y: {
-                ticks: { color: '#555', font: { family: 'Inter' } },
-                grid: { color: '#e0e0e0', borderDash: [5, 5] }
-            }
-        }
-    };
-
-    new Chart(document.getElementById('capexChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Investimento Industrial', 'Investimento Agrícola'],
-            datasets: [{
-                data: [94352557, 20370000],
-                backgroundColor: ['#00A6ED', '#00C895'],
-                borderColor: '#F7F7F7',
-                borderWidth: 4
-            }]
-        },
-        options: {
-            ...sharedChartOptions,
-            scales: { x: { display: false }, y: { display: false } },
-            cutout: '70%',
-            plugins: {
-                ...sharedChartOptions.plugins,
-                legend: {
-                    position: 'bottom',
-                    ...sharedChartOptions.plugins.legend
-                }
-            }
-        }
-    });
-
-    new Chart(document.getElementById('dreChart'), {
-        type: 'bar',
-        data: {
-            labels: [wrapLabels('Receita Bruta'), 'EBITDA', wrapLabels('Lucro Líquido')],
-            datasets: [
-                {
-                    label: 'Valor (R$)',
-                    data: [36107705, 13969657, 3724041],
-                    backgroundColor: ['#00C895', '#00A6ED', '#2ecc71'],
-                    borderRadius: 5,
-                }
-            ]
-        },
-        options: {
-            ...sharedChartOptions,
-            indexAxis: 'y',
-             plugins: {
-                legend: { display: false },
-                tooltip: {
-                    ...sharedChartOptions.plugins.tooltip,
-                    callbacks: {
-                        label: function(context) {
-                            return ` R$ ${context.parsed.x.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`;
+    <script>
+        // Data and configuration for the charts
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Chart Global Defaults
+            Chart.defaults.font.family = 'Inter, sans-serif';
+            Chart.defaults.color = '#334155'; // slate-700
+            
+            // 1. CAPEX Chart
+            const capexCtx = document.getElementById('capexChart');
+            if (capexCtx) {
+                new Chart(capexCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['CAPEX Industrial', 'CAPEX Agrícola'],
+                        datasets: [{
+                            label: 'Distribuição do CAPEX',
+                            data: [83750000, 9850000],
+                            backgroundColor: [
+                                '#10b981', // emerald-500
+                                '#f97316'  // orange-500
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { size: 14 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
                         },
-                        title: tooltipTitleCallback
+                        cutout: '60%'
                     }
-                }
-            },
-            scales: {
-                 x: {
-                    ticks: {
-                        callback: function(value, index, values) {
-                           return (value / 1,000,000) + 'M';
+                });
+            }
+
+            // 2. Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Venda de Metano (CH₄)', 'Venda de CBios', 'Venda de CO₂'],
+                        datasets: [{
+                            label: 'Composição da Receita (Ano 1)',
+                            data: [30220911, 821962, 799603],
+                            backgroundColor: [
+                                '#f97316', // orange-500
+                                '#22c55e', // green-500
+                                '#0ea5e9'  // sky-500
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { size: 14 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
-        }
-    });
 
-    new Chart(document.getElementById('sensibilidadeChart'), {
-        type: 'line',
-        data: {
-            labels: ['R$ 2,80', 'R$ 3,00', 'R$ 3,20', 'R$ 3,40', 'R$ 3,60'],
-            datasets: [{
-                label: 'TIR do Projeto',
-                data: [16.5, 19.5, 22.4, 25.2, 28.0],
-                borderColor: '#00C895',
-                backgroundColor: 'rgba(0, 200, 149, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#00C895',
-                pointRadius: 5,
-                pointHoverRadius: 8
-            }]
-        },
-        options: {
-            ...sharedChartOptions,
-            plugins: {
-                ...sharedChartOptions.plugins,
-                legend: { display: false },
-                tooltip: {
-                     ...sharedChartOptions.plugins.tooltip,
-                    callbacks: {
-                        label: function(context) {
-                            return ` TIR: ${context.parsed.y}%`;
-                        }
+            // 3. Disbursements Chart
+            const disbursementsCtx = document.getElementById('disbursementsChart');
+            if (disbursementsCtx) {
+                new Chart(disbursementsCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Custos Operacionais (OPEX)', 'Impostos'],
+                        datasets: [{
+                            label: 'Distribuição dos Desembolsos (Ano 1)',
+                            data: [12381638, 1988249],
+                            backgroundColor: [
+                                '#64748b', // slate-500
+                                '#ef4444'  // red-500
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { size: 14 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%'
                     }
-                }
-            },
-            scales: {
-                y: {
-                    ...sharedChartOptions.scales.y,
-                    title: { display: true, text: 'Taxa Interna de Retorno (%)', color: '#333745', font: { size: 14, weight: 'bold' } },
-                    ticks: {
-                        callback: function(value) { return value + '%'; }
-                    }
-                },
-                x: {
-                    ...sharedChartOptions.scales.x,
-                    title: { display: true, text: 'Preço de Venda do Metano (R$/Nm³)', color: '#333745', font: { size: 14, weight: 'bold' } }
-                }
+                });
             }
-        }
-    });
-</script>
 
+            // Fade-in animation on scroll
+            const fadeInElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => {
+                el.style.opacity = '0'; // Start hidden
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
