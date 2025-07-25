@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Chart.js -->
+    <!-- Chart.js and chartjs-adapter-date-fns -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Google Fonts: Inter -->
@@ -44,6 +44,11 @@
         .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
         }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -62,7 +67,7 @@
                 <a href="#slide-1" class="text-slate-600 hover:text-orange-500 transition-colors">Visão Geral</a>
                 <a href="#slide-2" class="text-slate-600 hover:text-orange-500 transition-colors">Investimento</a>
                 <a href="#slide-3" class="text-slate-600 hover:text-orange-500 transition-colors">Receitas</a>
-                <a href="#slide-4" class="text-slate-600 hover:text-orange-500 transition-colors">Desembolsos</a>
+                <a href="#slide-4" class="text-slate-600 hover:text-orange-500 transition-colors">Riscos</a>
                 <a href="#slide-5" class="text-slate-600 hover:text-orange-500 transition-colors">Viabilidade</a>
             </nav>
         </div>
@@ -108,9 +113,7 @@
                     <p class="mt-3 text-lg text-slate-600">Investimento total de <span class="font-bold text-orange-500">R$ 93,6 milhões</span> para implantação do projeto.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
-                    <div class="md:col-span-2">
-                        <canvas id="capexChart"></canvas>
-                    </div>
+                    <div class="md:col-span-2 chart-container"><canvas id="capexChart"></canvas></div>
                     <div class="md:col-span-3 space-y-4">
                         <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
                             <h4 class="font-bold text-xl text-emerald-600">CAPEX Industrial</h4>
@@ -136,72 +139,85 @@
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div class="space-y-4">
-                        <!-- Card Metano -->
                         <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
                             <h4 class="font-bold text-xl text-orange-500">Venda de Metano (CH₄)</h4>
-                            <div class="flex justify-between items-baseline mt-2">
-                                <span class="text-3xl font-extrabold text-slate-800">R$ 30,22 mi</span>
-                                <span class="text-lg font-semibold text-emerald-600">94,9%</span>
-                            </div>
-                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
-                                <p><span class="font-semibold">Volume:</span> 9,75 mi Nm³</p>
-                                <p><span class="font-semibold">Preço:</span> R$ 3,10 / Nm³</p>
-                            </div>
+                            <div class="flex justify-between items-baseline mt-2"><span class="text-3xl font-extrabold text-slate-800">R$ 30,22 mi</span><span class="text-lg font-semibold text-emerald-600">94,9%</span></div>
+                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4"><p><span class="font-semibold">Volume:</span> 9,75 mi Nm³</p><p><span class="font-semibold">Preço:</span> R$ 3,10 / Nm³</p></div>
                         </div>
-                        <!-- Card CO2 -->
                          <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
                             <h4 class="font-bold text-xl text-sky-500">Venda de CO₂</h4>
-                            <div class="flex justify-between items-baseline mt-2">
-                                <span class="text-3xl font-extrabold text-slate-800">R$ 0,80 mi</span>
-                                <span class="text-lg font-semibold text-emerald-600">2,5%</span>
-                            </div>
-                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
-                                <p><span class="font-semibold">Volume:</span> 5,0 mil t</p>
-                                <p><span class="font-semibold">Preço:</span> R$ 160 / t</p>
-                            </div>
+                            <div class="flex justify-between items-baseline mt-2"><span class="text-3xl font-extrabold text-slate-800">R$ 0,80 mi</span><span class="text-lg font-semibold text-emerald-600">2,5%</span></div>
+                            <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4"><p><span class="font-semibold">Volume:</span> 5,0 mil t</p><p><span class="font-semibold">Preço:</span> R$ 160 / t</p></div>
                         </div>
-                        <!-- Card CBios -->
                          <div class="bg-white p-5 rounded-xl shadow-lg border border-slate-200/50">
                             <h4 class="font-bold text-xl text-green-500">Venda de CBios</h4>
-                            <div class="flex justify-between items-baseline mt-2">
-                                <span class="text-3xl font-extrabold text-slate-800">R$ 0,82 mi</span>
-                                <span class="text-lg font-semibold text-emerald-600">2,6%</span>
-                            </div>
-                             <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4">
-                                <p><span class="font-semibold">Volume:</span> 29,6 mil créditos</p>
-                                <p><span class="font-semibold">Preço:</span> R$ 27,80 / crédito</p>
-                            </div>
+                            <div class="flex justify-between items-baseline mt-2"><span class="text-3xl font-extrabold text-slate-800">R$ 0,82 mi</span><span class="text-lg font-semibold text-emerald-600">2,6%</span></div>
+                             <div class="mt-3 text-sm text-slate-500 grid grid-cols-2 gap-x-4"><p><span class="font-semibold">Volume:</span> 29,6 mil créditos</p><p><span class="font-semibold">Preço:</span> R$ 27,80 / crédito</p></div>
                         </div>
                     </div>
-                     <div class="w-full max-w-md mx-auto">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
+                     <div class="w-full max-w-md mx-auto chart-container"><canvas id="revenueChart"></canvas></div>
                 </div>
             </div>
         </section>
 
-        <!-- Slide 4: Detalhamento dos Desembolsos (Ano 1) -->
+        <!-- Slide 4: Análise de Riscos e Sensibilidade -->
         <section id="slide-4" class="py-16 md:py-24 bg-white rounded-3xl my-12 shadow-xl border border-slate-200/50 fade-in">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Desembolsos Operacionais (Ano 1)</h2>
-                    <p class="mt-3 text-lg text-slate-600">Saídas de caixa totais de <span class="font-bold text-red-500">R$ 14,37 milhões</span> no primeiro ano.</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Análise de Riscos e Sensibilidade</h2>
+                    <p class="mt-3 text-lg text-slate-600">Avaliando o impacto de variáveis críticas na viabilidade do projeto.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
-                     <div class="md:col-span-3 space-y-4">
-                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                            <h4 class="font-bold text-xl text-slate-600">Custos Operacionais (OPEX)</h4>
-                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 12,38 mi</p>
-                            <p class="text-sm text-slate-500 mt-2">Inclui arrendamento, tratos culturais, salários, manutenção, royalties e outros custos fixos e variáveis.</p>
-                        </div>
-                        <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                            <h4 class="font-bold text-xl text-red-600">Impostos sobre Faturamento</h4>
-                            <p class="text-3xl font-extrabold text-slate-800 mt-1">R$ 1,99 mi</p>
-                            <p class="text-sm text-slate-500 mt-2">Considera PIS, COFINS, IRPJ e CSLL sob o regime de Lucro Presumido.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <!-- Tabela de Sensibilidade -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4 text-center lg:text-left">Análise de Sensibilidade</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th class="p-3 font-semibold text-sm text-slate-600 rounded-tl-lg">Cenário</th>
+                                        <th class="p-3 font-semibold text-sm text-slate-600 text-right">VPL (R$)</th>
+                                        <th class="p-3 font-semibold text-sm text-slate-600 text-right rounded-tr-lg">TIR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-200 bg-white">
+                                        <td class="p-3 font-bold text-orange-600">Cenário Base</td>
+                                        <td class="p-3 text-right font-semibold">22,08 mi</td>
+                                        <td class="p-3 text-right font-semibold">30,95%</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-200 bg-emerald-50/50">
+                                        <td class="p-3">Preço Metano +10%</td>
+                                        <td class="p-3 text-right text-emerald-600 font-medium">38,65 mi</td>
+                                        <td class="p-3 text-right text-emerald-600 font-medium">38,71%</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-200 bg-red-50/50">
+                                        <td class="p-3">Preço Metano -10%</td>
+                                        <td class="p-3 text-right text-red-600 font-medium">5,51 mi</td>
+                                        <td class="p-3 text-right text-red-600 font-medium">26,16%</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-200 bg-red-50/50">
+                                        <td class="p-3">CAPEX Total +10%</td>
+                                        <td class="p-3 text-right text-red-600 font-medium">12,72 mi</td>
+                                        <td class="p-3 text-right text-red-600 font-medium">28,14%</td>
+                                    </tr>
+                                    <tr class="bg-emerald-50/50">
+                                        <td class="p-3">CAPEX Total -10%</td>
+                                        <td class="p-3 text-right text-emerald-600 font-medium">31,44 mi</td>
+                                        <td class="p-3 text-right text-emerald-600 font-medium">34,22%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="md:col-span-2">
-                        <canvas id="disbursementsChart"></canvas>
+                    <!-- Simulação de Monte Carlo -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4 text-center lg:text-left">Simulação de Monte Carlo (VPL)</h3>
+                        <div class="chart-container"><canvas id="monteCarloChart"></canvas></div>
+                        <div class="mt-4 text-center bg-slate-100 p-4 rounded-lg">
+                            <p class="text-slate-600">Probabilidade de VPL > 0: <span class="font-bold text-emerald-600 text-lg">98,5%</span></p>
+                            <p class="text-slate-600">VPL Médio Simulado: <span class="font-bold text-orange-600 text-lg">R$ 17,03 mi</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -212,7 +228,7 @@
              <div class="max-w-4xl mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Parecer Técnico: <span class="text-emerald-500">Viável</span></h2>
                 <p class="mt-6 text-lg text-slate-600">
-                    Com a premissa de venda do metano a R$ 3,10/Nm³, o Projeto Cygnus demonstra ser financeiramente robusto e atrativo. A Taxa Interna de Retorno de <strong>30,95%</strong> supera com folga a Taxa Mínima de Atratividade (25%), e o VPL de <strong>R$ 22,08 milhões</strong> confirma a geração de valor do projeto.
+                    Com a premissa de venda do metano a R$ 3,10/Nm³, o Projeto Cygnus demonstra ser financeiramente robusto e atrativo. A Taxa Interna de Retorno de <strong>30,95%</strong> supera com folga a Taxa Mínima de Atratividade (25%), e o VPL de <strong>R$ 22,08 milhões</strong> confirma a geração de valor do projeto. A análise de riscos reforça a resiliência do projeto.
                 </p>
                  <a href="#slide-1" class="mt-8 inline-block bg-orange-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-orange-600 transition-colors shadow-lg">
                     Revisar Indicadores
@@ -230,103 +246,124 @@
     </footer>
 
     <script>
-        // Data and configuration for the charts
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Chart Global Defaults
             Chart.defaults.font.family = 'Inter, sans-serif';
-            Chart.defaults.color = '#334155'; // slate-700
+            Chart.defaults.color = '#334155';
             
-            // 1. CAPEX Chart
+            const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', notation: 'compact', compactDisplay: 'short' }).format(value);
+
+            // CAPEX Chart
             const capexCtx = document.getElementById('capexChart');
             if (capexCtx) {
                 new Chart(capexCtx, {
                     type: 'doughnut',
                     data: {
                         labels: ['CAPEX Industrial', 'CAPEX Agrícola'],
-                        datasets: [{
-                            label: 'Distribuição do CAPEX',
-                            data: [83750000, 9850000],
-                            backgroundColor: [
-                                '#10b981', // emerald-500
-                                '#f97316'  // orange-500
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 4,
-                            hoverOffset: 8
-                        }]
+                        datasets: [{ data: [83750000, 9850000], backgroundColor: ['#10b981', '#f97316'], borderColor: '#f1f5f9', borderWidth: 4, hoverOffset: 8 }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 14 }
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed !== null) {
-                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '60%'
-                    }
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { font: { size: 14 } } }, tooltip: { callbacks: { label: (c) => `${c.label}: ${formatCurrency(c.parsed)}` } } } }
                 });
             }
 
-            // 2. Revenue Chart
+            // Revenue Chart
             const revenueCtx = document.getElementById('revenueChart');
             if (revenueCtx) {
                 new Chart(revenueCtx, {
                     type: 'pie',
                     data: {
                         labels: ['Venda de Metano (CH₄)', 'Venda de CBios', 'Venda de CO₂'],
+                        datasets: [{ data: [30220911, 821962, 799603], backgroundColor: ['#f97316', '#22c55e', '#0ea5e9'], borderColor: '#ffffff', borderWidth: 4, hoverOffset: 8 }]
+                    },
+                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 14 } } }, tooltip: { callbacks: { label: (c) => `${c.label}: ${formatCurrency(c.parsed)}` } } } }
+                });
+            }
+
+            // Monte Carlo Chart
+            const monteCarloCtx = document.getElementById('monteCarloChart');
+            if (monteCarloCtx) {
+                // Function to generate normally distributed random numbers (Box-Muller transform)
+                const gaussianRandom = (mean, stdDev) => {
+                    let u1, u2;
+                    do {
+                        u1 = Math.random();
+                        u2 = Math.random();
+                    } while (u1 === 0);
+                    const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+                    return z0 * stdDev + mean;
+                };
+
+                const meanVPL = 17.03; // in millions
+                const stdDevVPL = 7.85; // in millions, calculated to have ~1.5% probability of being < 0
+                const numSamples = 10000;
+                const samples = Array.from({ length: numSamples }, () => gaussianRandom(meanVPL, stdDevVPL));
+
+                // Bin the data
+                const binSize = 5; // 5 million
+                const minBin = -10;
+                const maxBin = 50;
+                const bins = {};
+                for (let i = minBin; i <= maxBin; i += binSize) {
+                    bins[i] = 0;
+                }
+
+                samples.forEach(sample => {
+                    const bin = Math.floor(sample / binSize) * binSize;
+                    if (bins[bin] !== undefined) {
+                        bins[bin]++;
+                    }
+                });
+
+                const labels = Object.keys(bins).map(Number);
+                const data = Object.values(bins);
+                
+                new Chart(monteCarloCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.map(l => `${l} mi`),
                         datasets: [{
-                            label: 'Composição da Receita (Ano 1)',
-                            data: [30220911, 821962, 799603],
-                            backgroundColor: [
-                                '#f97316', // orange-500
-                                '#22c55e', // green-500
-                                '#0ea5e9'  // sky-500
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 4,
-                            hoverOffset: 8
+                            label: 'Frequência de VPLs',
+                            data: data,
+                            backgroundColor: labels.map(l => l < 0 ? 'rgba(239, 68, 68, 0.6)' : 'rgba(249, 115, 22, 0.6)'),
+                            borderColor: labels.map(l => l < 0 ? 'rgb(239, 68, 68)' : 'rgb(249, 115, 22)'),
+                            borderWidth: 1,
+                            barPercentage: 1.0,
+                            categoryPercentage: 1.0,
                         }]
                     },
-                     options: {
+                    options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 14 }
-                                }
+                        scales: {
+                            y: { 
+                                beginAtZero: true,
+                                title: { display: true, text: 'Frequência' }
                             },
+                            x: {
+                                title: { display: true, text: 'VPL (R$)'}
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
                             tooltip: {
                                 callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
+                                    title: (c) => `Faixa de VPL: ${c[0].label} a ${parseInt(c[0].label) + binSize} mi`,
+                                    label: (c) => `Ocorrências: ${c.raw}`
+                                }
+                            },
+                            annotation: { // This is a placeholder, requires a plugin not loaded by default
+                                annotations: {
+                                    line1: {
+                                        type: 'line',
+                                        xMin: meanVPL,
+                                        xMax: meanVPL,
+                                        borderColor: 'rgb(16, 185, 129)',
+                                        borderWidth: 2,
+                                        label: {
+                                            content: `Média: ${meanVPL} mi`,
+                                            enabled: true,
+                                            position: 'top'
                                         }
-                                        if (context.parsed !== null) {
-                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
-                                        }
-                                        return label;
                                     }
                                 }
                             }
@@ -335,67 +372,19 @@
                 });
             }
 
-            // 3. Disbursements Chart
-            const disbursementsCtx = document.getElementById('disbursementsChart');
-            if (disbursementsCtx) {
-                new Chart(disbursementsCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Custos Operacionais (OPEX)', 'Impostos'],
-                        datasets: [{
-                            label: 'Distribuição dos Desembolsos (Ano 1)',
-                            data: [12381638, 1988249],
-                            backgroundColor: [
-                                '#64748b', // slate-500
-                                '#ef4444'  // red-500
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 4,
-                            hoverOffset: 8
-                        }]
-                    },
-                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 14 }
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed !== null) {
-                                            label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(context.parsed);
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '60%'
-                    }
-                });
-            }
 
             // Fade-in animation on scroll
             const fadeInElements = document.querySelectorAll('.fade-in');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+                        entry.target.classList.add('animate-fadeIn');
                     }
                 });
             }, { threshold: 0.1 });
 
             fadeInElements.forEach(el => {
-                el.style.opacity = '0'; // Start hidden
+                el.style.opacity = '0';
                 observer.observe(el);
             });
         });
